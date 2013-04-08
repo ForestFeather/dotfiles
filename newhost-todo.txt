@@ -1,0 +1,14 @@
+# Todo preparing a new host.
+
+[ SSH ]
+ - Create keys. (ssh-keygen -t dsa)
+ - Install keys where possible.
+
+[ Screen ]
+ - Configure screenrc files. (default-screenrc, default-minscreenrc)
+ - Move files. (screenrc, minscreenrc)
+ - Add terminals.
+
+[ Bash ]
+ - Add host-specific function (.bashrc)
+

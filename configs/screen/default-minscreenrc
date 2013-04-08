@@ -1,0 +1,170 @@
+#################################################################################
+# FILE: ~/.screen/default-minscreenrc
+# AUTHOR: Collin "Ridayah" O'Connor <ridayah@gmail.com>
+# VERSION: 1.0.3
+# This is virtually identical to the default-screenrc file, the only difference
+# lies in the hardstatus line.  Have fun!
+#################################################################################
+
+#################################################################################
+# TERMINAL TWEAKS
+#
+# All of our Termcap/Terminfo/Termcapinfo lines!
+#################################################################################
+
+# XTERM TWEAKS
+#################################################################################
+
+# xterm understands both im/ic and doesn't have a status line.
+# Note: Do not specify im and ic in the real termcap/info file as
+# some programs (e.g. vi) will not work anymore.
+termcap  xterm hs@:cs=\E[%i%d;%dr:im=\E[4h:ei=\E[4l
+terminfo xterm hs@:cs=\E[%i%p1%d;%p2%dr:im=\E[4h:ei=\E[4l
+
+# 80/132 column switching must be enabled for ^AW to work
+# change init sequence to not switch width
+termcapinfo  xterm Z0=\E[?3h:Z1=\E[?3l:is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l
+
+# Make the output buffer large for (fast) xterms.
+termcapinfo xterm* OL=10000
+
+
+# tell screen that xterm can switch to dark background and has function
+# keys.
+termcapinfo xterm 'VR=\E[?5h:VN=\E[?5l'
+termcapinfo xterm 'k1=\E[11~:k2=\E[12~:k3=\E[13~:k4=\E[14~'
+termcapinfo xterm 'kh=\EOH:kI=\E[2~:kD=\E[3~:kH=\EOF:kP=\E[5~:kN=\E[6~'
+
+# special xterm hardstatus: use the window title.
+termcapinfo xterm 'hs:ts=\E]2;:fs=\007:ds=\E]2;screen\007'
+
+#terminfo xterm 'vb=\E[?5h$<200/>\E[?5l'
+termcapinfo xterm 'vi=\E[?25l:ve=\E[34h\E[?25h:vs=\E[34l'
+
+# emulate part of the 'K' charset
+termcapinfo xterm 'XC=K%,%\E(B,[\304,\\\\\326,]\334,{\344,|\366,}\374,~\337'
+
+# xterm-52 tweaks:
+# - uses background color for delete operations
+termcapinfo xterm* be
+
+
+
+# WYSE TERMINALS
+#################################################################################
+
+#wyse-75-42 must have flow control (xo = "terminal uses xon/xoff")
+#essential to have it here, as this is a slow terminal.
+termcapinfo wy75-42 xo:hs@
+
+# New termcap sequences for cursor application mode.
+termcapinfo wy* CS=\E[?1h:CE=\E[?1l:vi=\E[?25l:ve=\E[?25h:VR=\E[?5h:VN=\E[?5l:cb=\E[1K:CD=\E[1J
+
+
+
+# OTHER TERMINALS
+#################################################################################
+
+# make hp700 termcap/info better
+termcapinfo  hp700 'Z0=\E[?3h:Z1=\E[?3l:hs:ts=\E[62"p\E[0$~\E[2$~\E[1$}:fs=\E[0}\E[61"p:ds=\E[62"p\E[1$~\E[61"p:ic@'
+
+# Extend the vt100 desciption by some sequences.
+termcap  vt100* ms:AL=\E[%dL:DL=\E[%dM:UP=\E[%dA:DO=\E[%dB:LE=\E[%dD:RI=\E[%dC
+terminfo vt100* ms:AL=\E[%p1%dL:DL=\E[%p1%dM:UP=\E[%p1%dA:DO=\E[%p1%dB:LE=\E[%p1%dD:RI=\E[%p1%dC
+termcapinfo linux C8
+
+
+
+#################################################################################
+# BINDINGS AND SETTINGS
+#
+# For all our rebinding of keys and basic settings!
+#################################################################################
+
+# Bindings
+#################################################################################
+
+# Let's remove some dangerous key bindings ...
+bind k
+bind ^k
+bind .
+bind ^\
+bind \\
+bind ^h
+bind h
+
+# ... and make them better.
+bind 'K' kill
+bind 'I' login on
+bind 'O' login off
+bind '}' history
+
+# Yet another hack:
+# Prepend/append register [/] to the paste if ^a^] is pressed.
+# This lets me have autoindent mode in vi.
+register [ "\033:se noai\015a"
+register ] "\033:se ai\015a"
+bind ^] paste [.]
+
+# Useful keybindings!
+bind  ) select 10
+bind  ! select 11
+bind  @ select 12
+bind \# select 13
+bind \$ select 14
+bind  % select 15
+bind \^ select 16
+bind  & select 17
+bind  * select 18
+bind  ( select 19
+
+
+
+# Settings
+#################################################################################
+
+startup_message off				# Remove startup message.
+autodetach on						# Detach on hangup.
+shell -$SHELL						# Set our shell to the system shell.
+shelltitle "Shell"					# Default title for new windows.
+altscreen on						# Redraw screen after things like vim.
+msgwait 2						# 1 second message wait.
+vbell off						# Turn off visual bell.
+defscrollback 1000					# Longer scrollback. 1000 lines.
+crlf off						# Affects copying of text regions.
+nethack on						# Make error messages look like nethack.
+pow_detach_msg "Session: \$LOGNAME \$:cr:\$:nl:ended."	# Logout message.
+setenv LC_CTYPE en_US.UTF-8				# Set message types to UTF-8.
+defutf8 on						# Turn on UTF-8.
+idle 3600						# Idle time before turning on screensaver.
+blankerprg worms -t -d 100				# Screensaver program to run.
+
+
+
+#################################################################################
+# CAPTIONS AND STATUS LINES
+# 
+# This is for our backtick programs and status lines.  Just some basic info for
+# them!
+#################################################################################
+
+# BACKTICKS
+#################################################################################
+
+backtick 1 0 0 /home/ridayah/.screen/traff.sh
+backtick 2 60 60 /home/ridayah/.screen/uptime.sh
+backtick 3 10 10 /home/ridayah/.screen/temp.sh --short
+backtick 4 0 0 awk 'BEGIN {file = "/proc/loadavg"; while (a==a) { getline < file; proc=$4; printf("%6s\n"),(proc);close(file);system("sleep 1")}}'
+backtick 5 0 0 awk 'BEGIN {file = "/proc/stat"; while (a==a) {getline < file;u=$2-up;s=$3-sp;n=$4-np;i=$5-ip; printf ("%2.1f\n"),(u+s)/(u+s+n+i)*100; up=$2;sp=$3;np=$4;ip=$5; close(file);system("sleep 1")}}'
+
+# STATUS LINES
+#################################################################################
+
+# [(host) (date) (uptime) (temperature) (processes)] (screens) [(cpu) (loadavg) (traffic)]
+hardstatus alwayslastline "%{=}%{C}[%{G}%H %c %d/%m %2` %3` %4`%{-}]%{W}%=%-w %{R}%n%f %t%{-}%{W}%+w %=%{C}[%{G}%5` %l %1`%{-}]"
+
+#################################################################################
+# SCREENS
+#
+# Screens for this host.
+#################################################################################

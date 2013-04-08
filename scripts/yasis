@@ -1,0 +1,419 @@
+#!/usr/bin/perl
+# System Information Script originally for X-Chat, by s0ulslack (Tony Annen)
+# Some script ideas came from Xlack, a great xchat plugin wrote by Darkness
+# Distributed under the terms of the GNU General Public License, v2 or later
+# $Header: ~/.xchat2/yasis.pl, v3.0 2006/01/10 06:23:00 $
+
+# Having problems with lspci? make sure you have pciutils installed.
+# You can install it either through your distribution or by source.
+# Its available at http://atrey.karlin.mff.cuni.cz/~mj/pciutils.html
+
+# Also, if your running any kernel patches that increase security (like grsec)
+# it may break this script or report errors! (thanks to TMS for the help in testing)
+# Need help or wanna chat? /msg s0ulslack on Undernet, Freenode or EFnet
+
+# Click Settings -> Advanced -> User Commands...
+# Click Add New Twice, and edit it so the Names/Commands are like below
+
+# Name                 Command
+# yasis                exec -o ~/.xchat2/yasis-3.0.pl %2
+# yasishelp            exec ~/.xchat2/yasis-3.0.pl -h
+
+# Save it, and your done :)
+## NOTE: the ChangeLog history is now kept in a seperate file (ChangeLog-YASIS)
+
+$sver="v3.0";
+# Figure out (try to) where lspci is located
+if(-e "/sbin/lspci"){ $lspci="/sbin/lspci"; }
+if(-e "/bin/lspci"){ $lspci="/bin/lspci"; }
+if(-e "/usr/sbin/lspci"){ $lspci="/usr/sbin/lspci"; }
+if(-e "/usr/bin/lspci"){ $lspci="/usr/bin/lspci"; }
+if(-e "/usr/local/sbin/lspci"){ $lspci="/usr/local/sbin/lspci"; }
+if(-e "/usr/local/bin/lspci"){ $lspci="/usr/local/bin/lspci"; }
+if(-e "/opt/sbin/lspci"){ $lspci="/opt/sbin/lspci"; }
+if(-e "/opt/bin/lspci"){ $lspci="/opt/bin/lspci"; }
+if(!$lspci){ 
+  system("echo pciutils is not installed or lspci wasn't found!");
+  system("echo check the top of the yasis file for more info.");
+  exit;
+}
+
+if($ARGV[0]){
+    $switch=$ARGV[0];
+  }else{
+  $switch="-";
+}
+
+if(-x "/sbin/zenity"){ $do_gui="1"; }
+if(-x "/bin/zenity"){ $do_gui="1"; }
+if(-x "/usr/sbin/zenity"){ $do_gui="1"; }
+if(-x "/usr/bin/zenity"){ $do_gui="1"; }
+if(-x "/usr/local/sbin/zenity"){ $do_gui="1"; }
+if(-x "/usr/local/bin/zenity"){ $do_gui="1"; }
+if(-x "/opt/sbin/zenity"){ $do_gui="1"; }
+if(-x "/opt/bin/zenity"){ $do_gui="1"; }
+
+# CPU Load (only tested with one cpu)
+  $cpu_load=`export TERM=dumb; top -b -d .1 -n2 | grep "Cpu(s)" | awk '{print \$2}' | tail -n1 | sed 's/%//'`; chop($cpu_load);
+  $cpu_load=sprintf("%.0f",($cpu_load));
+  $cpu_load="$cpu_load% load)";
+
+# The inital window for the -gui switch
+if($switch eq "-gui"){
+ if($do_gui){
+  system('tail -f /etc/passwd | zenity --name=yasis --progress --pulsate --auto-close --window-icon=/usr/share/pixmaps/xchat.png --title="YASIS" --text="Please wait,\nRetrieving System Information..." &');
+ }
+}
+
+# Kernel Version
+  $uname=`uname -r`; chop($uname);
+
+# CPU
+  $cpu=cat("/proc/cpuinfo");
+  if($cpu=~/sparc/){
+    $cpu=~ /(.*sparc.*)/;
+    @cpumodel=split/:/,$1;
+    $cpumodel=$cpumodel[1];
+    $cpumodel=~ s/ //;
+    $cpu=~ /(.*bogomips.*)/;
+    @cpumhz=split/:/,$1;
+    $cpumhz=sprintf ("%.f",$cpumhz[1]);
+    $cpuinf="$cpumodel @ ${cpumhz}MHz"; 
+  }elsif($cpu=~/ 486/){
+    $cpu=~ /(.*model name.*)/;
+    @cpumodel=split/:/,$1;
+    $cpumodel=$cpumodel[1];
+    $cpumodel=~ s/ //;
+    $cpu=~ /(.*bogomips.*)/;
+    @cpumhz=split/:/,$1;
+    $cpumhz=sprintf ("%.f",$cpumhz[1]);
+    $cpuinf="$cpumodel @ ${cpumhz}MHz";
+  }else{
+    $cpu=~ /(.*model name.*)/;
+    @cpumodel=split/:/,$1;
+    $cpumodel=$cpumodel[1];
+    $cpumodel=~ s/ //;
+    $cpu=~ /(.*cpu MHz.*)/;
+    @cpumhz=split/:/,$1;
+    $cpumhz=sprintf ("%.f",$cpumhz[1]);
+    $cpuinf="$cpumodel @ ${cpumhz}MHz";
+  }
+  $cpu_cnt=`cat /proc/cpuinfo | grep 'processor' | wc -l | sed 's/ *//'`; chop($cpu_cnt);
+  $cache=`cat /proc/cpuinfo | grep 'cache size' | head -n 1 | sed -e 's/^.*: //'`; chop($cache);
+  $bogomips=`cat /proc/cpuinfo | grep 'bogomips' | head -n 1  | sed -e 's/^.*: //'`; chop($bogomips);
+
+# CPU Temp (requires the "sensors" command to be in $PATH)
+#  if(-e "/sbin/sensors"){ $sensors="/sbin/sensors"; }
+#  if(-e "/bin/sensors"){ $sensors="/bin/sensors"; }
+#  if(-e "/usr/bin/sensors"){ $sensors="/usr/bin/sensors"; }
+#  if(-e "/usr/sbin/sensors"){ $sensors="/usr/sbin/sensors"; }
+  if($sensors){ $do_temp="1"; }else{ $do_temp="0"; }
+    if($do_temp == "1"){
+      $cpu_temp=`sensors | grep temp3 | awk '{print \$2}' | sed 's/.*+//'`; chop($cpu_temp);
+      $cpu_temp1=`sensors -f | grep temp3 | awk '{print \$2}' | sed 's/.*+//'`; chop($cpu_temp1);
+      $cpu_rpm=`sensors | grep fan1 | awk '{print \$2,\$3}' | sed 's/.*+//'`; chop($cpu_rpm);
+    }
+
+# Memory
+  $mem_total=`free | grep Mem | awk '{printf (\"%dMm\", \$2/1024 )}'`; chop($mem_total);
+  $mem_free=`free | grep Mem | awk '{printf (\"%.0fMm\", ( \$3 -(\$6 + \$7) )/1024)}'`; chop($mem_free);
+  $mem_per=`free -m | grep Mem | awk '{printf (\"%.0f\", (\$2 - \$3 + \$6 + \$7) * (100/ \$2))}'`; 
+  $buffered_mem=`free | grep Mem | awk '{printf (\"%.0fM\", (\$6)/1024)}'`;
+  $cached_mem=`free | grep Mem | awk '{printf (\"%.0fM\", (\$7)/1024)}'`;
+
+# Swap (try to handle this smoothly)
+  $any_swap=`free -m | grep Swap | awk '{print \$2}'`;
+  if($any_swap != 0){
+    $swap_total=`free | grep Swap | awk '{printf (\"%dMm\", \$2/1024 )}'`; chop($swap_total);
+    $swap_free=`free | grep Swap | awk '{printf (\"%.0fMm\", ( \$3 -(\$6 + \$7) )/1024)}'`; chop($swap_free);
+    $swap_per=`free -m | grep Swap | awk '{printf (\"%.0f\", (\$2 - \$3 + \$6 + \$7) * (100/ \$2))}'`;
+  }
+
+# Video 
+  $xchk=`ps aux | grep "[x]init" | wc -l`;
+  $xchk=`ps aux | grep "/usr/bin/X" | wc -l`;
+  $gdmchk=`ps aux | grep "[g]dm-binary" | wc -l`;
+  $gdmchk2=`ps aux | grep "[kg]dm" | wc -l`;
+  if($xchk > 0){
+   $idchk=`ps aux | grep "[x]init " | awk '{print \$1}'`; $me=`whoami`;
+   if($idchk eq $me){
+     $do_display="1";
+   }else{
+##   NOTE: change this to "0" if root can't use xdpyinfo
+##   to access other users X session stats... it'd be something
+##   like "connection refused from 0:0" or along the lines
+     $do_display="1";
+   }
+    }elsif($gdmchk > 0 && $xchk == "0"){
+      $do_display="1"; 
+    }elsif($gdmchk2 > 0 && $xchk == "0" && $gdmchk =="0"){
+      $do_display="1";
+    }else{
+      $do_display="0";
+      $con_display="1";
+  }
+
+  if($do_display == "1"){
+   if(-x "/usr/X11R6/bin/xdpyinfo"){ $xdpy="/usr/X11R6/bin/xdpyinfo"; }
+   if(-x "/usr/local/X11R6/bin/xdpyinfo"){ $xdpy="/usr/X11R6/bin/xdpyinfo"; }
+   if(-x "/usr/bin/xdpyinfo"){ $xdpy="/usr/bin/xdpyinfo"; }
+   if(-x "/usr/X11R6/bin/xrandr"){ $xrandr="/usr/X11R6/bin/xrandr"; }
+   if(-x "/usr/local/X11R6/bin/xrandr"){ $xrandr="/usr/local/X11R6/bin/xrandr"; }
+   if(-x "/usr/bin/xrandr"){ $xrandr="/usr/bin/xrandr"; }
+    if($xrandr){
+      $refrsh_rate = `$xrandr | grep "*" | awk '{print \$10}' | sed 's/*//'`; chop($refrsh_rate);
+      if($refrsh_rate){ $refrsh_rate="/${refrsh_rate}Hz"; }
+    }
+    if(-x "/usr/X11R6/bin/glxinfo"){ $glx="/usr/X11R6/bin/glxinfo"; }
+    if(-x "/usr/local/X11R6/bin/glxinfo"){ $glx="/usr/local/X11R6/bin/glxinfo"; }
+    if(-x "/usr/bin/glxinfo"){ $glx="/usr/bin/glxinfo"; }
+    if($glx){	
+      $dri=`$glx | grep "direct rendering: Yes" | wc -l`; 
+      if($dri > 0){ $dri="/DRI"; }else{ $dri="/No DRI"; }
+    }else{
+      $dri="/No DRI";
+    }
+    $vid_card=`$lspci | grep VGA | sed -e 's/.*: //' | sed 's/ (.*//' | sed 's/ATI Technologies Inc //' | tail -n1`; chop($vid_card);
+    if($xdpy){
+      $screen_res=`$xdpy | grep dimensions | awk '{print \$2}'`; chop($screen_res);
+      if(!$screen_res){ $screen_res="Unknown Res"; }
+      $screen_depth=`$xdpy | grep "depth of root window" | awk '{print \$5}'`; chop($screen_depth);
+      if(!$screen_depth){ $screen_depth="Unknown"; }
+    }
+
+  # Get Xorg/Xfree version
+  if(!$x){ $x=`$xdpy | grep XFree86"."version | awk '{print \$3}'`; if($x ne ""){ $x="XFree86 $x"; }} chomp($x);
+  if(!$x){ $x=`$xdpy | grep X.Org"."version | awk '{print \$3}'`; if($x ne ""){ $x="X.Org $x"; }} chomp($x);
+  if(!$x){ $x="Unknown X-Server"; }
+
+  # Get Desktop Enviroment/Window Manager (All rewrote as of v2.8)
+  $fluxchk=`ps ax | grep [f]luxbox | wc -l`; if($fluxchk > 0){ $de=`fluxbox -version | grep Fluxbox | sed 's/-.*//' | sed 's/ :.*//'`; }
+  $bbchk=`ps ax | grep [b]lackbox | wc -l`; if($bbchk > 0){ $de=`blackbox --version | grep Blackbox | sed 's/ :.*//'`; }
+  $obchk=`ps ax | grep [o]penbox | wc -l`; if($obchk > 0){ $de=`openbox --version | grep Openbox`; }
+  $wmchk=`ps ax | grep [w]maker | wc -l`; if($wmchk > 0){ $de=`wmaker --version | grep "Window Maker"`; }
+  $kdechk=`ps ax | grep [s]tartkde | wc -l`; if($kdechk > 0){ $de=`kde-config --version | grep "KDE:" | sed 's/://'`; }
+  $echk=`ps ax | grep [e]nlightenment | wc -l`; if($echk > 0){ $de=`enlightenment --version | grep Version | awk '{print \$1, \$3}'`; }
+  $gchk=`ps ax | grep [g]nome-session | wc -l`; if($gchk > 0){ $de=`gnome-panel --version | sed 's/.*gnome-panel //'`; $de="Gnome $de"; }
+  $xfchk=`ps ax | grep [x]fwm4 | wc -l`; if($xfchk > 0){ $de=`xfwm4 --version | grep version | awk '{print \$5}'`; { $de="Xfce $de"; }}
+  if(!$de){ $de="Unknown GUI"; }
+#  $de=`sed 's/)//' \$de`;
+  chop($de);
+}else{
+  $vid_card=`$lspci | grep VGA | sed -e 's/.*: //' | sed 's/ (.*//' | sed 's/ATI Technologies Inc //' | tail -n1`; chop($vid_card);
+}  
+
+# Hard Drive
+  $hdspacet=`df -P | awk '{ sum+=\$2/1024^2 }; END { printf (\"%.02f\", sum )}'`;
+  $hdspaceu=`df -P | awk '{ sum+=\$3/1024^2 }; END { printf (\"%.02f\", sum )}'`;
+  $hdspacef=`df -P | awk '{ sum+=\$4/1024^2 }; END { printf (\"%.02f\", sum )}'`;
+  $hdpercent=sprintf("%.0f",(100/${hdspacet}*${hdspacef}));
+  $hdspacet="${hdspacet}G"; $hdspaceu="${hdspaceu}G"; $hdspacef="${hdspacef}G";
+
+# Network (default and others)
+  $tmp="/tmp/.rinfo";
+  system(`/sbin/route -n > $tmp`);
+  open(ROUTE, "$tmp") or die;
+  @rinfo=<ROUTE>;
+  close(ROUTE) or die;
+    foreach $line (@rinfo){
+      if($line=~/0.0.0.0/){
+        ($dest, $gate, $mask, $flags, $metric, $ref, $use, $face)=split(/\s+/, $line, 8);
+        chop($dest, $gate, $mask, $flags, $metric, $ref, $use, $face);
+      } 
+      if($line=~/192.168/){
+        ($dest1, $gate1, $mask1, $flags1, $metric1, $ref1, $use1, $face1)=split(/\s+/, $line, 8);
+        chop($dest1, $gate1, $mask1, $flags1, $metric1, $ref1, $use1, $face1);
+      }
+  }
+  system(`rm -rf $tmp`);
+  if($face1 eq "$face"){ $face1=""; }
+  $ppp=`$lspci | grep Communication | sed 's/.*: //' | sed 's/ (.*//' | tail -n1`; chop($ppp);
+  $eth=`$lspci | grep Ethernet | sed 's/.*: //' | sed 's/ (.*//' | tail -n1 | sed 's/Corporation //'`; chop($eth);
+  if($face eq "ppp0"){ $eth_name=$ppp; $inet="ppp0"; }elsif($face eq "ppp1"){ $eth_name=$ppp; $inet="ppp1"; }elsif($face eq "ppp2"){ $eth_name=$ppp; $inet="ppp2"; }
+  if($face eq "eth0"){ $eth_name=$eth; $inet="eth0"; }elsif($face eq "eth1"){ $eth_name=$eth; $inet="eth1"; }elsif($face eq "eth2"){ $eth_name=$eth; $inet="eth2"; }
+  if($face1 eq "eth0"){ $eth_name1=$eth; $inet1="eth0"; }elsif($face1 eq "eth1"){ $eth_name1=$eth; $inet1="eth1"; }elsif($face1 eq "eth2"){ $eth_name1=$eth; $inet1="eth3"; }
+  if($face && $face1){ $facep=$face; $facee=$face1; $face="${face}*, $face1"; }else{ $face="${face}"; }
+ if($face eq ""){ $face="Unknown Device"; }
+ if(!$eth_name){ $eth_name="Unknown Device"; }
+
+# Network Traffic
+if($inet && $inet1){
+  $packet_inp=`cat /proc/net/dev | grep $inet | awk -F: '/:/ {print \$2}' | awk '{printf \$1}'`;
+  $packet_outp=`cat /proc/net/dev | grep $inet | awk -F: '/:/ {print \$2}' | awk '{print \$9}'`;
+  $packet_ine=`cat /proc/net/dev | grep $inet1 | awk -F: '/:/ {print \$2}' | awk '{printf \$1}'`;
+  $packet_oute=`cat /proc/net/dev | grep $inet1 | awk -F: '/:/ {print \$2}' | awk '{print \$9}'`;
+  $packet_in=$packet_inp+$packet_ine;
+  $packet_out=$packet_outp+$packet_oute;
+
+    if($packet_inp < 1024**3){ $packet_inp=sprintf("%.02f",$packet_inp / 1024**2)."M"; }else{ $packet_inp=sprintf("%.02f", $packet_inp / 1024**3)."G"; }
+    if($packet_outp < 1024**3){ $packet_outp=sprintf("%.02f",$packet_outp / 1024**2)."M"; }else{ $packet_outp=sprintf("%.02f", $packet_outp / 1024**3)."G"; }
+    if($packet_ine < 1024**3){ $packet_ine=sprintf("%.02f",$packet_ine / 1024**2)."M"; }else{ $packet_ine=sprintf("%.02f", $packet_ine / 1024**3)."G"; }
+    if($packet_oute < 1024**3){ $packet_oute=sprintf("%.02f",$packet_oute / 1024**2)."M"; }else{ $packet_oute=sprintf("%.02f", $packet_oute / 1024**3)."G"; }
+    if($packet_in < 1024**3){ $packet_in=sprintf("%.02f",$packet_in / 1024**2)."M"; }else{ $packet_in=sprintf("%.02f", $packet_in / 1024**3)."G"; }
+    if($packet_out < 1024**3){ $packet_out=sprintf("%.02f",$packet_out / 1024**2)."M"; }else{ $packet_out=sprintf("%.02f", $packet_out / 1024**3)."G"; }
+
+  }elsif($inet){
+  $packet_in=`cat /proc/net/dev | grep $inet | awk -F: '/:/ {print \$2}' | awk '{printf \$1}'`;
+  $packet_out=`cat /proc/net/dev | grep $inet | awk -F: '/:/ {print \$2}' | awk '{print \$9}'`;
+    if($packet_in < 1024**3){ $packet_in=sprintf("%.02f",$packet_in / 1024**2)."M"; }else{ $packet_in=sprintf("%.02f", $packet_in / 1024**3)."G"; }
+    if($packet_out < 1024**3){ $packet_out=sprintf("%.02f",$packet_out / 1024**2)."M"; }else{ $packet_out=sprintf("%.02f", $packet_out / 1024**3)."G"; }
+  }else{
+  $packet_in="0.00M";
+  $packet_out="0.00M";
+}
+
+# Network device speed (in/out, only for one device atm)
+# and yes, this isn't exactly pretty but works for now :p
+  $fst=`cat /proc/net/dev | grep $inet | awk '{print \$1}' | sed 's/.*://'`;
+  $fsto=`cat /proc/net/dev | grep $inet | awk '{print \$9}' | sed 's/.*://'`;
+  sleep 1;
+  $scnd=`cat /proc/net/dev | grep $inet | awk '{print \$1}' | sed 's/.*://'`;
+  $scndo=`cat /proc/net/dev | grep $inet | awk '{print \$9}' | sed 's/.*://'`;
+  $total=sprintf("%.02f",$scnd - $fst)."f";
+  $totalo=sprintf("%.02f",$scndo - $fsto)."f";
+  $total=sprintf("%.02f",$total / 1024)."kB/ss";
+  $totalo=sprintf("%.02f",$totalo / 1024)."kB/ss";
+  chop($fst,$scnd,$total,$fsto,$scndo,$totalo);
+
+# uptime stuff
+  $uptime=`uptime`;
+  chop($uptime);
+  $uptime=~ /.+ up (.+),.+[0-9]+ user/;
+  $uptime=$1;
+
+# best uptime related
+  $buchk=`ls -asl ~/ | grep .buptime | wc -l`;
+  if($buchk == "0"){ system("cat /proc/uptime | awk '{printf \$1}' > ~/.buptime_uptime"); system("echo \"$uptime\" > ~/.buptime"); }
+  $cu=`cat /proc/uptime | awk '{printf \$1}'`; chop($cu); 
+  $bu=`cat ~/.buptime_uptime`; chop($bu);
+  $buptime=`cat ~/.buptime | sed 's/ //'`; chop($buptime);
+
+# Distro related
+  if(-e "/etc/gentoo-release"){ $distro=`cat /etc/gentoo-release | sed 's/version //'`; }
+  if(-e "/etc/slackware-version"){ $distro=`cat /etc/slackware-version | sed 's/version //'`; }
+  if(-e "/etc/redhat-release"){ $distro=`cat /etc/redhat-release | sed 's/version //'`; }
+  if(-e "/etc/mandrake-release"){ $distro=`cat /etc/mandrake-release | sed 's/version //'`; }
+  if(-e "/etc/debian_version"){ $distro="Debian ".`cat /etc/debian_version | sed 's/version //'`.""; }
+  if(-e "/etc/SuSE-release"){ $distro=`cat /etc/SuSE-release | sed 's/version //'`; }
+  if(-e "/etc/turbolinux-release"){ $distro=`cat /etc/turbolinux-release | sed 's/version //'`; }
+  if(-e "/etc/libranet_version"){ $distro="Libranet-`cat /etc/libranet_version | sed 's/version //'`"; }
+  if(-e "/etc/arch-release"){ $distro=`cat /etc/arch-release | sed 's/version //'`; }
+  if(-e "/etc/lunar.release"){ $distro=`cat /etc/lunar.release`; }
+  if($distro eq ""){ $distro="Unknown Distro"; }
+  chop($distro);
+
+if($switch eq "-gui"){
+ if(!$do_gui){ system("echo \"Zenity is not installed\""); exit; }
+ if($do_gui){
+  $zchk=`ps ax | grep [z]enity | wc -l`;
+  if($zchk > "0"){ system("killall -9 zenity; killall -9 tail"); }else{ system("killall -9 tail"); exit; }
+  my $pid=open READER, "zenity --name=yasis --list --column=\"Options\" --window-icon=/usr/share/pixmaps/xchat.png --title=\"YASIS $sver\"  \"1 : full (all)\" \"2 : short (-video) stats\" \"3 : os/kernel (# processes)\" \"4 : cpu(s) (bmpis/load)\" \"5 : memory (buffered/cached/free + swap)\" \"6 : video (gui/x11/vcard/res/refrsh/bpp/dri)\" \"7: disk (used/free)\" \"8 : network (dev(s), in/out traffic)\" \"9 : uptime (best uptime)\" \"10 : cpu temp/fan rpm(s)\" --width=350 --height=316 --text=\"Select the stats to view\"|" or die "Can't run the program";
+  while(<READER>){
+    $output.=$_;
+  }
+  close READER;
+  if(!$output){ exit; }
+  if($output=~/1/){ $switch="a"; } if($output=~/2/){ $switch="s"; }
+  if($output=~/3/){ $switch="o"; } if($output=~/4/){ $switch="c"; }
+  if($output=~/5/){ $switch="m"; } if($output=~/6/){ $switch="v"; }
+  if($output=~/7/){ $switch="d"; } if($output=~/8/){ $switch="n"; }
+  if($output=~/9/){ $switch="u"; } if($output=~/10/){ $switch="t"; }
+ }
+}
+
+if($switch=~/b/ or $switch=~/[i-l]/ or $switch=~/[p-r]/ or $switch=~/[w-z]/){
+  $final="";
+
+}elsif($switch=~/d/){
+  $final="[Disk]  $hdspaceu Used, $hdspacet Total ($hdpercent% Free)";
+
+}elsif($switch=~/m/){
+  $swap_used=`free -m | grep Swap | awk '{print \$3}'`;
+  if($swap_used != 0){
+    $final="[Memory]  Physical: $mem_free Used, $mem_total Total ($mem_per% Free, $buffered_mem Buffered, $cached_mem Cached) :: Virtual: $swap_free Used, $swap_total Total ($swap_per% Free)"; 
+  }else{
+    $final="[Memory]  $mem_free Used, $mem_total Total ($mem_per% Free, $buffered_mem Buffered, $cached_mem Cached)"; 
+  }
+}elsif($switch=~/s/){
+  if($cu > $bu){ system("echo \"$uptime\" > ~/.buptime"); system("echo \"$cu\" > ~/.buptime_uptime"); }
+  if($cache){ $cache="($cache/"; }
+  if(!$cache){ $cache="(";}
+  $final="[OS]  $distro ($uname) :: [Uptime] $uptime :: [CPU] $cpu_cnt-$cpuinf ${cache}$cpu_load :: [Memory] $mem_free Used, $mem_total Total ($mem_per% Free) :: [Disk] $hdspaceu Used, $hdspacet Total ($hdpercent% Free) :: [Network] $eth_name ($face: $packet_in In, $packet_out Out)";
+}elsif($switch=~/t/){
+  if(!$cpu_temp and !$cpu_temp1 and !$cpu_rpm){
+    $final="[CPU  Temp] No Sensors";
+  }else{
+    $final="[CPU  Temp] $cpu_temp/$cpu_temp1 (fan: $cpu_rpm)";
+}
+
+}elsif($switch=~/v/){
+  if(!$vid_card and !$screen_res and !$screen_depth){
+    $final="[Video]  No Display";
+  }elsif($vid_card and $con_display){
+    $final="[Video]  $vid_card";
+  }else{
+    $final="[Video]  ${de}/$x running on $vid_card (${screen_res}/${screen_depth} Bit${refrsh_rate}${dri})";
+}
+
+}elsif($switch=~/n/){
+  if($face && $face1){
+    if($facep=~/ppp[0-2]/){ $facep="${inet}"; }
+    if($facee=~/eth[0-2]/ && $inet1){ $facee="${inet1}"; }
+    $pinfo="($facep: $packet_inp In, $packet_outp Out :: $facee: $packet_ine In, $packet_oute Out)";
+  }elsif($face){
+    if($face=~/ppp[0-2]/){ $face="${inet}"; }
+    if($face=~/eth[0-2]/ && $inet){ $face="${inet}"; }
+    $pinfo="($face: $packet_in In($total), $packet_out Out($totalo))";
+#    $pinfo="($face: $packet_in In, $packet_out Out)";
+}
+  $final="[Network]  $eth_name $pinfo";
+
+}elsif($switch=~/h/){
+  $z="/yasis";
+  $final="[commands]
+   $z -a (full(all) info)
+  $z -c (cpu(s) +load %/bogomips)
+  $z -d (disk space +free/used/%)
+  $z -m (memory +buffered/cached)
+  $z -n (network +devs/in/out traffic)
+  $z -o (os/kernel version +running processes)
+  $z -s (short -video info)
+  $z -t (cpu temp/fan rpm(s))
+  $z -u (uptime +best uptime)
+  $z -v (video +gui/x11/card/res/refrsh/depth/dri)
+  $z -gui (displays a gtk2 menu for stats to display)";
+
+}elsif($switch=~/o/){
+  $pc=`ps ax | wc -l | awk '{print \$1 - 4}'`; chop($pc);
+  $final="[OS]  ${distro}; Kernel $uname ($pc processes)";
+
+}elsif($switch=~/c/){
+  if($cache && $bogomips){ $cache="($cache/$bogomips bogomips/"; }elsif($cache){ $cache="($cache/"; }
+  if(!$cache){ $cache="(";}
+    $final="[CPU]  $cpu_cnt-$cpuinf ${cache}$cpu_load";
+
+}elsif($switch=~/u/){
+  if($cu > $bu){ system("echo \"$uptime\" > ~/.buptime"); system("echo \"$cu\" > ~/.buptime_uptime"); }
+  $buptime=`cat ~/.buptime`; chop($buptime);
+  $final="[Uptime]  $uptime (Best: $buptime)";
+}else{
+  if($cu > $bu){ system("echo \"$uptime\" > ~/.buptime"); system("echo \"$cu\" > ~/.buptime_uptime"); }
+  if($cache){ $cache="($cache/"; }
+  if(!$cache){ $cache="(";}
+    if($do_display == "1"){
+      $final="[OS]  $distro ($uname) :: [Uptime] $uptime :: [CPU] $cpu_cnt-${cpuinf} ${cache}${cpu_load} :: [Memory] $mem_free Used, $mem_total Total ($mem_per% Free) :: [Video] $vid_card (${screen_res}/${screen_depth} Bit${refrsh_rate}) :: [Disk] $hdspaceu Used, $hdspacet Total ($hdpercent% Free) :: [Network] $eth_name ($face: $packet_in In, $packet_out Out)";
+    }else{
+      $final="[OS]  $distro ($uname) :: [Uptime] $uptime :: [CPU] $cpu_cnt-$cpuinf ${cache}$cpu_load :: [Memory] $mem_free Used, $mem_total Total ($mem_per% Free) :: [Video] $vid_card :: [Disk] $hdspaceu Used, $hdspacet Total ($hdpercent% Free) :: [Network] $eth_name ($face: $packet_in In, $packet_out Out)";
+    }
+  }
+
+$final=~ s/ //;
+print "$final\n";
+
+sub cat {
+  my @file; 
+  open MYFILE, $_[0] or die "$!"; 
+  @file=<MYFILE>; 
+  close MYFILE; 
+  return (wantarray) ? @file : join("",  @file);
+}

@@ -1,0 +1,40 @@
+#!/bin/bash
+#Wednesday, December 06 2006
+
+# To make this work, it must be run as root (ideally).  Should be set executable with chmod +x (script)
+# and then a cronscript created.  To do this when loads go high, uncomment the if statement and set script
+# to run every 5 minutes or so.
+
+EMAIL="networkadmin@wrmed.com"
+SUBJECT="Alert $(hostname) load average is $L05"
+TEMPFILE="/tmp/$(hostname)"
+echo "Load average Crossed allowed limit." >> $TEMPFILE
+echo "Hostname: $(hostname)" >> $TEMPFILE
+echo "Local Date & Time : $(date)" >> $TEMPFILE
+echo "| Uptime status: |" >> $TEMPFILE
+echo "-------------------------------------------" >> $TEMPFILE
+/usr/bin/uptime >> $TEMPFILE
+echo "-------------------------------------------" >> $TEMPFILE
+echo "| Top 20 CPU consuming processes: |" >> $TEMPFILE
+ps aux | head -1 >> $TEMPFILE
+ps aux --no-headers | sort -rk 3 | head -20 >> $TEMPFILE
+echo "| Top 10 memory-consuming processes: |" >> $TEMPFILE
+ps aux --no-headers| sort -rk 4 | head >> $TEMPFILE
+echo "-------------------------------------------" >> $TEMPFILE
+echo "| Memory and Swap status: |" >> $TEMPFILE
+/usr/bin/free -m >> $TEMPFILE
+echo "-------------------------------------------" >> $TEMPFILE
+echo "| Active network connection: |" >> $TEMPFILE
+echo "-------------------------------------------" >> $TEMPFILE
+/bin/netstat -tnup | grep ESTA >> $TEMPFILE
+echo "-------------------------------------------" >> $TEMPFILE
+echo "| Disk Space information: |" >> $TEMPFILE
+echo "-------------------------------------------" >> $TEMPFILE
+/bin/df -h >> $TEMPFILE
+echo "-----------------THE END-------------------" >> $TEMPFILE
+L05="$(uptime|awk '{print $(NF-2)}'|cut -d. -f1)"
+#if test $L05 -gt 5
+#then
+    mail -s "$SUBJECT" "$EMAIL" < $TEMPFILE
+#fi
+rm -f $TEMPFILE
