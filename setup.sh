@@ -76,7 +76,13 @@ echo "BASH shell links created."
 
 
 # Set up other items
-
+miscArr=("dir_colors")
+echo "Setting up miscellaneous configuration file links."
+for LINK in ${miscArr[@]}; do
+        #echo "Linking .${LINK}..."
+        link_file "configs/${LINK}" ".${LINK}"
+done
+echo "Miscellaneous configuration file links created."
 
 # Generate ssh keys
 
