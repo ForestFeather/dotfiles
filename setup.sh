@@ -76,7 +76,7 @@ echo "BASH shell links created."
 
 
 # Set up other items
-miscArr=("dir_colors")
+miscArr=("dir_colors" "tmux.conf")
 echo "Setting up miscellaneous configuration file links."
 for LINK in ${miscArr[@]}; do
         #echo "Linking .${LINK}..."
