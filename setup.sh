@@ -1,7 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
 # Get our operational path
-SOURCE="${BASH_SOURCE[0]}"
+#SOURCE="${BASH_SOURCE[0]}"
+SOURCE="$( cd "$( dirname "$0" )" && pwd )"
 while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
   DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
   SOURCE="$(readlink "$SOURCE")"
@@ -10,7 +11,7 @@ done
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 # function area
-function link_file {
+link_file() {
 	source = "$SOURCE/$1"		# source file location.  $1 should be from the root of the git clone, which is found by execution of this script.
 	target = "$HOME/$2"  		# target file location.  $2 should be the filename or path/filename from $HOME.
 	if [ -e "${target}" ] && [ ! -L "${target}" ]; then
@@ -24,7 +25,7 @@ function link_file {
 	ln -s "${source}" "${target}"
 }
 
-function unlink_file {
+unlink_file() {
 	target = "$HOME/$1"  		# target file location.  $1 should be the filename or path/filename from $HOME.
 	if [ -e "${target}.bak" ] && [ ! -L "${target}.bak" ]; then
 		# Found our target, aka it exists, and it's not already a link, so back it up
@@ -53,7 +54,8 @@ if [ ! -d "$HOME/.vim" ]; then
 fi
 
 # Set up bash links
-for LINK in profile bash_profile bashrc bash_logout; do 
+bash_Arr=('profile' 'bash_profile' 'bashrc' 'bash_logout')
+for LINK in ${bash_Arr[@]}; do
 	echo "Linking .${LINK}..."
 	link_file "bash/${LINK}" ".${LINK}"
 done
