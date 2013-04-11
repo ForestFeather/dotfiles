@@ -43,21 +43,14 @@ unlink_file() {
 }
 
 # Set up directories
-if [ ! -d "$HOME/scripts" ]; then
-    mkdir "$HOME/scripts"
-fi
-if [ ! -d "$HOME/bin" ]; then
-    mkdir "$HOME/bin"
-fi
-if [ ! -d "$HOME/.screen" ]; then
-    mkdir "$HOME/.screen"
-fi
-if [ ! -d "$HOME/.git" ]; then
-    mkdir "$HOME/.git"
-fi
-if [ ! -d "$HOME/.vim" ]; then
-    mkdir "$HOME/.vim"
-fi
+foldersArr=(scripts bin .screen .vim .tmux .git Applications Documents Downloads DUMP Movies Music Pictures Projects Sites Landfill)
+for LINK in ${foldersArr[@]}; do
+	if [ ! -d "$HOME/$LINK" ]; then
+		echo -n "Directory $LINK doesn't exist, creating..."
+		mkdir "$HOME/$LINK"
+		echo "Done!"
+	fi
+done
 
 # Set up bash links
 bash_Arr=('profile' 'bash_profile' 'bashrc' 'bash_logout')
