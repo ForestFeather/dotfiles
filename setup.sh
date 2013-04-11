@@ -73,7 +73,11 @@ echo "BASH shell links created."
 
 
 # Set up scripts
-
+echo "Setting up script links."
+for LINK in `ls scripts | xargs -n 1 basename`; do
+	link_file "scripts/${LINK}" "scripts/${LINK}"
+done
+echo "Script links created."
 
 # Set up other items
 miscArr=("dir_colors" "tmux.conf")
