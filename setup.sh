@@ -44,6 +44,7 @@ unlink_file() {
 
 # Set up directories
 foldersArr=(scripts bin .screen .vim .tmux .git Applications Documents Downloads DUMP Movies Music Pictures Projects Sites Landfill)
+echo "Creating directories."
 for LINK in ${foldersArr[@]}; do
 	if [ ! -d "$HOME/$LINK" ]; then
 		echo -n "Directory $LINK doesn't exist, creating..."
@@ -51,13 +52,16 @@ for LINK in ${foldersArr[@]}; do
 		echo "Done!"
 	fi
 done
+echo "Directories created."
 
 # Set up bash links
 bash_Arr=('profile' 'bash_profile' 'bashrc' 'bash_logout')
+echo "Creating BASH shell links."
 for LINK in ${bash_Arr[@]}; do
-	echo "Linking .${LINK}..."
+	#echo "Linking .${LINK}..."
 	link_file "bash/${LINK}" ".${LINK}"
 done
+echo "BASH shell links created."
 
 # Set up vim
 
