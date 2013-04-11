@@ -12,26 +12,32 @@ DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 # function area
 link_file() {
-	source = "$SOURCE/$1"		# source file location.  $1 should be from the root of the git clone, which is found by execution of this script.
-	target = "$HOME/$2"  		# target file location.  $2 should be the filename or path/filename from $HOME.
-	if [ -e "${target}" ] && [ ! -L "${target}" ]; then
+	SRC="$SOURCE/$1"		# source file location.  $1 should be from the root of the git clone, which is found by execution of this script.
+	TGT="$HOME/$2"  		# target file location.  $2 should be the filename or path/filename from $HOME.
+	if [ -e "${TGT}" ] && [ ! -L "${TGT}" ]; then
 		# Found our target, aka it exists, and it's not already a link, so back it upi
-		echo -n "Found existing item at ${target}, moving to ${target}.bak..."
-		mv "${target}" "${target}.bak"
+		echo -n "Found existing item at ${TGT}, moving to ${TGT}.bak..."
+		mv "${TGT}" "${TGT}.bak"
 		echo "Done!"
 	fi
 	
 	# Link file here
-	ln -s "${source}" "${target}"
+	if [ ! -e "${TGT}" ]; then 
+		echo -n "Linking ${TGT}..."
+		ln -s "${SRC}" "${TGT}"
+		echo "Done!"
+	else
+		echo "${TGT} was already a link, skipping."
+	fi
 }
 
 unlink_file() {
-	target = "$HOME/$1"  		# target file location.  $1 should be the filename or path/filename from $HOME.
-	if [ -e "${target}.bak" ] && [ ! -L "${target}.bak" ]; then
+	TGT="$HOME/$1"  		# target file location.  $1 should be the filename or path/filename from $HOME.
+	if [ -e "${TGT}.bak" ] && [ ! -L "${TGT}.bak" ]; then
 		# Found our target, aka it exists, and it's not already a link, so back it up
-		echo -n "Found backup for ${target}, deleting ${target} and replacing backup to original location..."
-		unlink "${target}"
-		mv "${target}.bak" "${target}"
+		echo -n "Found backup for ${TGT}, deleting ${TGT} and replacing backup to original location..."
+		unlink "${TGT}"
+		mv "${TGT}.bak" "${TGT}"
 		echo "Done!"
 	fi
 }
