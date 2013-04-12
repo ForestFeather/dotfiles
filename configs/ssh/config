@@ -1,5 +1,5 @@
 Host *
-    PreferredAuthentications publickey,keyboard-interactive
+#    PreferredAuthentications publickey,keyboard-interactive,password
     ServerAliveInterval 120
     ServerAliveCountMax 1000
 
@@ -7,7 +7,6 @@ Host home
     User ridayah
     HostName whitedrake.ath.cx
     Port 3764
-    ServerAliveCountMax
 
 Host feathermage
     User cdo
@@ -16,4 +15,5 @@ Host feathermage
 Host minecraft
    User minecraft
    HostName eros
-   ProxyCommand ssh -q -W %h:%p ridayah@whitedrake.ath.cx:3764
+   Port 22
+   ProxyCommand ssh -v -W %h:%p -p 3764 ridayah@whitedrake.ath.cx
