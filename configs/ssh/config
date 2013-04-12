@@ -18,4 +18,4 @@ Host minecraft
     User minecraft
     HostName eros
     Port 22
-    ProxyCommand ssh -v -W %h:%p -p 3764 ridayah@whitedrake.ath.cx
+    ProxyCommand ssh -q -W %h:%p -p 3764 ridayah@whitedrake.ath.cx
