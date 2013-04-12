@@ -100,6 +100,11 @@ if [ ! -e ~/.ssh/id_dsa ]; then
 else
 	echo "Existing id_dsa found, skipping SSH key generation."
 fi
+echo "Setting up ssh configuration files."
+sshArr=('config')
+for LINK in ${sshArr[@]}; do
+        link_file "configs/ssh/${LINK}" ".ssh/${LINK}"
+done
 
 echo "SSH setup completed."
 
