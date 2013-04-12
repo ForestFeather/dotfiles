@@ -40,4 +40,5 @@ done`
 
 awk 'BEGIN {file="/proc/net/dev";while(a==a){while(getline<file!=0){if(substr($1,1,4)=="'"$INTERFACE"'"){d=substr($1,6,10);u=$9;printf "%s:%6.1fkd",("'"$INTERFACE"'"),((d-dp)/1024);printf " %6.1fku\n",((u-up)/1024)}};close(file);dp=d;up=u;system("sleep 1")}}'
 
+#awk 'BEGIN {file="/proc/net/dev";dp=0;up=0;u=0;d=0;while(getline<file!=0){if(substr($1,1,4)=="'"$INTERFACE"'"){dp=substr($1,6,10);up=$9;}}close(file);system("sleep 1");while(getline<file!=0){if(substr($1,1,4)=="'"$INTERFACE"'"){d=substr($1,6,10);u=$9;}}close(file);printf "%s:%6.1fkd",("'"$INTERFACE"'"),((d-dp)/1024); printf " %6.1fku\n",((u-up)/1024)}'
 #--= the end. =--
