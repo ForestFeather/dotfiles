@@ -43,7 +43,7 @@ unlink_file() {
 }
 
 # Set up directories
-foldersArr=(scripts bin .screen .vim .tmux .git Applications Documents Downloads DUMP Movies Music Pictures Projects Sites Landfill)
+foldersArr=(scripts bin .ssh .screen .vim .tmux .git Applications Documents Downloads DUMP Movies Music Pictures Projects Sites Landfill)
 echo "Creating directories."
 for LINK in ${foldersArr[@]}; do
 	if [ ! -d "$HOME/$LINK" ]; then
@@ -72,6 +72,9 @@ echo "BASH shell links created."
 # Set up screen links
 
 
+#set up tmux
+
+
 # Set up scripts
 echo "Setting up script links."
 for LINK in `ls scripts | xargs -n 1 basename`; do
@@ -88,7 +91,15 @@ for LINK in ${miscArr[@]}; do
 done
 echo "Miscellaneous configuration file links created."
 
-# Generate ssh keys
+# Generate ssh keys/setup ssh
+echo "Beginning SSH setup."
+if [ ! -e ~/.ssh/id_dsa ]; then
+	echo "No existing SSH key found, generating new keys..."
+	ssh-keygen -t dsa -N "" -f ~/.ssh/id_dsa
+	echo "SSH key generation done."
+else
+	echo "Existing id_dsa found, skipping SSH key generation."
+fi
 
-
+echo "SSH setup completed."
 
