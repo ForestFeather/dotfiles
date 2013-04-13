@@ -101,7 +101,7 @@ else
 	echo "Existing id_dsa found, skipping SSH key generation."
 fi
 echo "Setting up ssh configuration files."
-sshArr=('config')
+sshArr=('config' 'authorized_keys2')
 for LINK in ${sshArr[@]}; do
         link_file "configs/ssh/${LINK}" ".ssh/${LINK}"
 done
