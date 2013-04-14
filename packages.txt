@@ -1,0 +1,9 @@
+required:
+vim
+tmux
+less
+
+optional:
+keychain
+irssi
+mutt
