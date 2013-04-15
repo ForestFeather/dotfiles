@@ -1,6 +1,8 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Author:
+"	Collin O'Connor, modified from the original linked in blog post
 " Version: 
-"       5.0 - 29/05/12 15:43:36
+"       5.1 - 4/15/13
 "
 " Blog_post: 
 "       http://amix.dk/blog/post/19691#The-ultimate-Vim-configuration-on-Github
