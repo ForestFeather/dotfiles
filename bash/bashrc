@@ -184,6 +184,7 @@ function basicprompt () {
 # Requires the hostnam and usernam variables above.
 function prompt_command {
 	TERMWIDTH=${COLUMNS}
+    # TODO: PUT SIZE CHANGING IN HERE.  THIS WILL DO IT.
 	#tempdate=$(date "+%A, %b %d %r")
 	memavail=$(memavailable)
 	lsbytes=$(lsbytesum)
