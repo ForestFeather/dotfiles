@@ -231,7 +231,13 @@ function longprompt () {
 #PROMPT_COMMAND=prompt_command
 
 case $TERM in
-	*rxvt* | putty | *xterm* | screen* ) longprompt ;;
+	*rxvt* | putty | *xterm* | screen* ) 
+        if [ ${COLUMNS} -ge 60 ]; then
+            longprompt
+        else
+            basicprompt
+        fi
+        ;;
 	*) basicprompt ;;
 esac
 
