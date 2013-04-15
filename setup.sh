@@ -81,7 +81,7 @@ echo "Vim shell links created."
 
 
 #set up tmux
-tmuxArr=('sbs')
+tmuxArr=('sbs' '3s' '3e' )
 echo "Setting up tmux related files..."
 for LINK in ${tmuxArr[@]}; do
     link_file "configs/tmux/${LINK}" ".tmux/${LINK}"
