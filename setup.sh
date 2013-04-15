@@ -64,7 +64,13 @@ done
 echo "BASH shell links created."
 
 # Set up vim
+vimArr=('vimrc')
+echo "Creating vim shell links."
+for LINK in ${vimArr[@]}; do
+	link_file "configs/vim/${LINK}" ".${LINK}"
+done
 
+echo "Vim shell links created."
 
 # Set up git
 
