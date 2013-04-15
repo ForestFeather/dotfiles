@@ -81,7 +81,12 @@ echo "Vim shell links created."
 
 
 #set up tmux
-
+tmuxArr=('sbs')
+echo "Setting up tmux related files..."
+for LINK in ${tmuxArr[@]}; do
+    link_file "configs/tmux/${LINK}" ".tmux/${LINK}"
+done
+echo "Tmux setup completed."
 
 # Set up scripts
 echo "Setting up script links."
