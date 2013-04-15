@@ -369,6 +369,7 @@ case $PKG_MNGR in
                 alias remove='sudo apt-get remove -y'
                 alias update='sudo apt-get update -y'
                 alias upgrade='sudo apt-get upgrade -y'
+                alias distupgrade='sudo apt-get dist-upgrade -y'
                 alias expunge='sudo apt-get clean -y'
                 alias flush='sudo apt-get autoremove -y'
 	;;
@@ -502,10 +503,6 @@ esac
 #################################################################################
 
 # SSH Aliases
-alias uwsuper="ssh coconno3@linux.uwsuper.edu"
-alias cs2="ssh coconno3@cs2.uwsuper.edu"
-alias awswan="ssh whitedrake@whitedrake.awswan.com"
-alias aquinor="ssh -p 3764 ridayah@whitedrake.homelinux.net"
 
 # Muck Aliases
 alias alfandria="tf -f~/.tf/Alfandria"
@@ -625,9 +622,6 @@ function swap () {
 }
 
 # Upload functions, for sending files to servers.
-function dndawswan () { scp "$1" whitedrake@whitedrake.awswan.com:~/whitedrake.net/dnd/ ; }
-function upawswan () { scp "$1" whitedrake@whitedrake.awswan.com:~/whitedrake.net/$2 ; }
-function upaquinor () { scp -P 3764 "$1" ridayah@whitedrake.homelinux.net:~/public_html/$2 ; }
 
 # This is to get a new host ready for everything; sets up bashrc and bash_profile, sets
 # up the ssh key, and then sends the scripts tar.bz2
@@ -748,34 +742,6 @@ function lowercase()  # move filenames to lowercase
 #	echo -e "Hasta la vista, baby"
 #}
 #trap _exit EXIT
-
-# If I ever got twitter, I'd like this.
-# twitter client
-twitter () {
-	#local user='myusername';
-	#local pass='mypass';
-	echo -n "Enter Twitter Username: "
-        read -e user
-        echo -n "Enter Twitter Password: "
-        read -e pass
-        local twit=`echo -n "$@"`
-	if [ -z "$twit" ]; then
-		echo 'Enter your twit and hit return'
-		read twit
-	fi
-	echo -n 'wait...'
-	curl -u"$user:$pass" -dstatus="$twit" https://twitter.com/statuses/update.xml >/dev/null 2>&1 && echo 'okay'
-}
-
-weather ()
-{ 
-	echo -n "Enter Zip Code: "
-	read -e zipcode
-	declare -a WEATHERARRAY 
-	WEATHERARRAY=( `elinks -dump "http://www.google.com/search?hl=en&lr=&client=firefox-a&rls=org.mozilla%3Aen-US%3Aofficial&q=weather+$zipcode&btnG=Search" | grep -A 5 -m 1 "Weather for" | grep -v "Add to "`) 
-	echo ${WEATHERARRAY[@]} 
-}
-
 
 # An alias, but is big enough I'm putting it here!
 # From http://www.suseblog.com/?p=331

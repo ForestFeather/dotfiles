@@ -43,7 +43,7 @@ unlink_file() {
 }
 
 # Set up directories
-foldersArr=(scripts bin .ssh .screen .vim .tmux .git Applications Documents Downloads DUMP Movies Music Pictures Projects Sites Landfill)
+foldersArr=(scripts bin .ssh .screen .vim '.vim/colors' '.vim/bundles' '.vim/plugins' .tmux .git Applications Documents Downloads DUMP Movies Music Pictures Projects Sites Landfill)
 echo "Creating directories."
 for LINK in ${foldersArr[@]}; do
 	if [ ! -d "$HOME/$LINK" ]; then
@@ -64,11 +64,13 @@ done
 echo "BASH shell links created."
 
 # Set up vim
-vimArr=('vimrc')
+vimArr=('colors/grb256.vim')
 echo "Creating vim shell links."
+link_file "configs/vim/vimrc" ".vimrc"
 for LINK in ${vimArr[@]}; do
-	link_file "configs/vim/${LINK}" ".${LINK}"
+	link_file "configs/vim/${LINK}" ".vim/${LINK}"
 done
+
 
 echo "Vim shell links created."
 
