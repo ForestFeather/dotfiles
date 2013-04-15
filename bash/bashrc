@@ -230,9 +230,15 @@ function longprompt () {
 #}
 #PROMPT_COMMAND=prompt_command
 
+function current_pane_width() {
+    tmux list-panes -t "Session" | grep \(active\) | awk -F'[\[x\]]' '{print $2}'
+}
+
 case $TERM in
 	*rxvt* | putty | *xterm* | screen* ) 
-        if [ ${COLUMNS} -ge 60 ]; then
+        if [ -n ${TMUX} ] && [ current_pane_width -ge 60 ] ; then
+            longprompt
+        elif [  ${COLUMNS} -ge 60  ]; then
             longprompt
         else
             basicprompt
