@@ -499,6 +499,7 @@ case $HOSTNAM in
 
 	;;
 	* )
+        alias homenet="ssh -p 3764 ridayah@whitedrake.asuscomm.com"
 	;;
 esac
 
