@@ -1,0 +1,11 @@
+## Generic to ignore
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
+
+## Generated files
+build/
+
+
