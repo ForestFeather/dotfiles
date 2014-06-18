@@ -75,7 +75,13 @@ done
 echo "Vim shell links created."
 
 # Set up git
-
+git_Arr=('gitignore' 'gitconfig' 'gitmodules')
+echo "Creating Git shell links."
+for LINK in ${bash_Arr[@]}; do
+    #echo "Linking .${LINK}..."
+    link_file "configs/git/${LINK}" ".${LINK}"
+done
+echo "Git shell links created."
 
 # Set up screen links
 
