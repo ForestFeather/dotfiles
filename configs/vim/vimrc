@@ -54,6 +54,13 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
+" Amazing plugin, should be illegal not to have
+"Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+
+" Better plugin for line
+"Plugin 'bling/vim-airline'
+Plugin 'itchyny/lightline.vim'
+
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
@@ -205,7 +212,7 @@ if has("gui_running")
 endif
 
 " Set utf8 as standard encoding and en_US as the standard language
-set encoding=utf8
+set encoding=utf-8
 
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
@@ -302,7 +309,7 @@ set laststatus=2
 
 " Format the status line
 " TODO: Going to want to customize this
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
+"set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " EDIT MAPPINGS
@@ -384,6 +391,13 @@ map <leader>pp :setlocal paste!<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " HELPER FUNCTIONS
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" POWERLINE CONFIGURATION STUFF
+
+let g:Powerline_symbols = 'unicode'
+"set fillchars+=st1:\ ,st1nc:\ 
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
