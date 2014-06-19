@@ -87,7 +87,11 @@ echo "Vim shell links created."
 # Fetch Vundle for vim
 echo "Getting Vundle for vim plugins."
 if [ ! -d "$HOME/.vim/bundle/Vundle.vim/" ]; then
-    git clone https://github.com/gmarik/vundle.git .vim/bundle/Vundle/
+    git clone https://github.com/gmarik/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
+    
+    echo "Installing Vim plugins."
+    vim +PluginInstall +qall
+    echo "Vim plugins installed."
 fi
 
 # Set up git
