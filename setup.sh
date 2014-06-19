@@ -43,7 +43,7 @@ unlink_file() {
 }
 
 # Set up directories
-foldersArr=(scripts bin .ssh .screen .vim '.vim/colors' '.vim/bundles' '.vim/plugins' .tmux .git Applications Documents Downloads DUMP Movies Music Pictures Projects Sites Landfill)
+foldersArr=(scripts bin .ssh .screen .vim '.vim/colors' '.vim/bundles' '.vim/plugins' .tmux .git .fonts Applications Documents Downloads DUMP Movies Music Pictures Projects Sites Landfill)
 echo "Creating directories."
 for LINK in ${foldersArr[@]}; do
 	if [ ! -d "$HOME/$LINK" ]; then
@@ -53,6 +53,18 @@ for LINK in ${foldersArr[@]}; do
 	fi
 done
 echo "Directories created."
+
+# Install fonts
+fontsArr=()
+fontConfArr=()
+echo "Creating fonts."
+for LINK in ${fontsArr[@]}; do
+    link_file "fonts/${LINK}" ".fonts/${LINK}"
+done
+for LINK in ${fontConfArr[@]}; do
+    link_file "fontconfig/${LINK}" ".config/fontconfig/conf.d/${LINK}"
+done
+echo "Font links installed."
 
 # Set up bash links
 bash_Arr=('profile' 'bash_profile' 'bashrc' 'bash_logout')
@@ -82,6 +94,9 @@ for LINK in ${bash_Arr[@]}; do
     link_file "configs/git/${LINK}" ".${LINK}"
 done
 echo "Git shell links created."
+
+# Download git Submodules
+
 
 # Set up screen links
 
