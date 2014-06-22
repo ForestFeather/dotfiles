@@ -204,6 +204,14 @@ if has("gui_running")
     set guitablabel=%M\ %t
 endif
 
+let g:lightline = {
+      \ 'colorscheme': 'landscape',
+      \ 'component': {
+      \   'readonly': '%{&readonly?"⭤":""}',
+      \ },
+      \ 'separator': { 'left': '', 'right': '' },
+      \ 'subseparator': { 'left': '', 'right': '' }
+      \ }
 
 try
     colorscheme grb256
