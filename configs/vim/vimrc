@@ -58,10 +58,25 @@ Plugin 'gmarik/Vundle.vim'
 "Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 
 " Better plugin for line
-"Plugin 'bling/vim-airline'
-Plugin 'itchyny/lightline.vim'
+Plugin 'bling/vim-airline'
+"Plugin 'itchyny/lightline.vim'
 
 Plugin 'tpope/vim-fugitive'
+
+" Does some stuff with coding for a sort of browser
+Plugin 'majutsushi/tagbar'
+
+" Syntax stuff
+Plugin 'scrooloose/syntastic'
+
+" Shows git status in the sidebar area.  Very useful.
+Plugin 'airblade/vim-gitgutter'
+
+" Shows all buffers in command bar.
+Plugin 'bling/vim-bufferline'
+
+" File browser.  Very useful.
+Plugin 'scrooloose/nerdtree'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
@@ -206,26 +221,28 @@ if has("gui_running")
     set guitablabel=%M\ %t
 endif
 
-let g:lightline = {
-      \ 'colorscheme': 'landscape',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'fugitive', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'component_function' : {
-      \   'fugitive': 'MyFugitive'
-      \ },
-      \ 'component': {
-      \   'readonly': '%{&filetype=="help"?"":&readonly?"⭤":""}',
-      \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}' 
-      \ },
-      \ 'component_visible_condition': {
-      \   'readonly': '(&filetype!="help"&& &readonly)',
-      \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))'
-      \ },
-      \ 'separator': { 'left': '', 'right': '' },
-      \ 'subseparator': { 'left': '', 'right': '' }
-      \ }
+let g:airline_powerline_fonts = 1
+
+"let g:lightline = {
+"      \ 'colorscheme': 'landscape',
+"      \ 'active': {
+"      \   'left': [ [ 'mode', 'paste' ],
+"      \             [ 'fugitive', 'readonly', 'filename', 'modified' ] ]
+"      \ },
+"      \ 'component_function' : {
+"      \   'fugitive': 'MyFugitive'
+"      \ },
+"      \ 'component': {
+"      \   'readonly': '%{&filetype=="help"?"":&readonly?"⭤":""}',
+"      \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}' 
+"      \ },
+"      \ 'component_visible_condition': {
+"      \   'readonly': '(&filetype!="help"&& &readonly)',
+"      \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))'
+"      \ },
+"      \ 'separator': { 'left': '', 'right': '' },
+"      \ 'subseparator': { 'left': '', 'right': '' }
+"      \ }
 
 try
     colorscheme grb256
