@@ -2,6 +2,7 @@ required:
 vim
 tmux
 less
+ruby
 
 optional:
 keychain
