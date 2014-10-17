@@ -43,7 +43,7 @@ unlink_file() {
 }
 
 # Set up directories
-foldersArr=(scripts bin .ssh .screen .vim .config '.config/fontconfig' '.config/fontconfig/conf.d'  '.vim/colors' '.vim/bundle' '.vim/plugin' .tmux .git .fonts Applications Documents Downloads DUMP Movies Music Pictures Projects Sites Landfill)
+foldersArr=(scripts bin .ssh .mutt .screen .vim .config '.config/fontconfig' '.config/fontconfig/conf.d'  '.vim/colors' '.vim/bundle' '.vim/plugin' .tmux .git .fonts Applications Documents Downloads DUMP Movies Music Pictures Projects Sites Landfill)
 echo "Creating directories."
 for LINK in ${foldersArr[@]}; do
 	if [ ! -d "$HOME/$LINK" ]; then
@@ -108,6 +108,14 @@ echo "Git shell links created."
 
 # Set up screen links
 
+
+# Set up mutt
+muttArr=('muttrc')
+echo "Setting up mutt related files..."
+for LINK in ${muttArr[@]}; do
+    link_file "configs/mutt/${LINK}" ".mutt/${LINK}"
+done
+echo "Mutt setup completed."
 
 #set up tmux
 tmuxArr=('sbs' '3s' '3e' )
