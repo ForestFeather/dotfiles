@@ -1,0 +1,23 @@
+set from = "ridayah@gmail.com"
+set realname = "Collin 'Ridayah' O'Connor"
+set imap_user = "ridayah@gmail.com"
+set imap_pass = "I<3internet"
+
+# Remote Gmail Folders
+set folder = "imaps://imap.gmail.com:993"
+set spoolfile = "+INBOX"
+set postponed ="+[Google Mail]/Drafts"
+set trash = "+[Google Mail]/Trash"
+
+# LOCAL FOLDERS FOR CACHED HEADERS AND CERTIFICATES
+set header_cache =~/.mutt/cache/headers
+set message_cachedir =~/.mutt/cache/bodies
+set certificate_file =~/.mutt/certificates
+
+# SMTP Settings
+set smtp_url = "smtp://ridayah@smtp.gmail.com:587/"
+set smtp_pass = "I<3internet"
+
+# Securing
+set move = no
+set imap_keepalive = 900
