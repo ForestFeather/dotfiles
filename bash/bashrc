@@ -537,6 +537,7 @@ alias scalesmuck="tf -f~/.tf/Scales"
 alias taillog="tail -n 30 -f /var/log/messages"
 
 # Screen aliases
+alias irssi="screen irssi"
 alias screen="screen -U"
 alias screenon="screen -c $HOME/.screen/screenrc -S Default"
 alias minscreen="screen -c $HOME/.screen/minscreenrc -S Default"
