@@ -11,4 +11,5 @@ mutt
 mutt-patched
 urlview
 w3m
+pass (for mutt)
 gcalcli
