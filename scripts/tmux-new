@@ -8,6 +8,8 @@ tmux new-window -t Session:3 -n "SSH"
 tmux new-window -t Session:4 -n "Shell"
 tmux new-window -t Session:5 -n "Shell"
 tmux new-window -t Session:6 -n "Shell"
+tmux new-window -t Session:7 -n "Mail"
+tmux new-window -t Session:8 -n "Edits"
 
 # select and attach
 tmux select-window -t Session:1
