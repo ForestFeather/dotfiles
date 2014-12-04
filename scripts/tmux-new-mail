@@ -1,0 +1,13 @@
+#!/bin/sh
+
+tmux new-session -d -s Mail -n "Personal"
+
+# Some window definitions
+tmux new-window -t Session:2 -n "Private"
+tmux new-window -t Session:3 -n "MNFurs"
+tmux new-window -t Session:4 -n "Secretary"
+tmux new-window -t Session:5 -n "Feather-Mage"
+
+# select and attach
+tmux select-window -t Session:1
+tmux -2 attach-session -t Mail
