@@ -1,0 +1,34 @@
+[general]
+ui = TTY.TTYUI
+accounts = Personal
+pythonfile=~/.mutt/offlineimap.py
+fsync = False
+
+[Account Personal]
+localrepository = Personal-Local
+remoterepository = Personal-Remote
+status_backend = sqlite
+postsynchook = notmuch new
+
+[Repository Personal-Local]
+type = Maildir
+localfolders = ~/.mail/personal
+nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
+                            'sent':    '[Gmail]/Sent Mail',
+                            'flagged': '[Gmail]/Starred',
+                            'trash':   '[Gmail]/Trash',
+                            'archive': '[Gmail]/All Mail',
+                           }.get(folder, folder)
+
+[Repository Personal-Remote]
+maxconnections = 1
+type = Gmail
+remoteuser = collin.d.oconnor@gmail.com
+remotepasseval = 
+realdelete = no
+nametrans = lambda folder: {'[Gmail]/Drafts':    'drafts',
+                            '[Gmail]/Sent Mail': 'sent',
+                            '[Gmail]/Starred':   'flagged',
+                            '[Gmail]/Trash':     'trash',
+                            '[Gmail]/All Mail':  'archive',
+                           }.get(folder, folder)
