@@ -12,3 +12,5 @@
 [ Bash ]
  - Add host-specific function (.bashrc)
 
+[ Mail ]
+ - Create .netrc file for passwords/accounts.
