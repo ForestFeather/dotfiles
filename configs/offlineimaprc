@@ -32,3 +32,5 @@ nametrans = lambda folder: {'[Gmail]/Drafts':    'drafts',
                             '[Gmail]/Trash':     'trash',
                             '[Gmail]/All Mail':  'archive',
                            }.get(folder, folder)
+# Necessary as of OfflineIMAP 6.5.4
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
