@@ -43,7 +43,8 @@ unlink_file() {
 }
 
 # Set up directories
-foldersArr=(scripts bin .ssh .mutt .mail .screen .vim .config '.config/fontconfig' '.config/fontconfig/conf.d'  '.vim/colors' '.vim/bundle' '.vim/plugin' .tmux .git .fonts Applications Documents Downloads DUMP Movies Music Pictures Projects Sites Landfill)
+p
+foldersArr=(scripts bin .ssh .mutt .mail .offlineimap .screen .vim .config '.config/fontconfig' '.config/fontconfig/conf.d'  '.vim/colors' '.vim/bundle' '.vim/plugin' .tmux .git .fonts Applications Documents Downloads DUMP Movies Music Pictures Projects Sites Landfill)
 echo "Creating directories."
 for LINK in ${foldersArr[@]}; do
 	if [ ! -d "$HOME/$LINK" ]; then
@@ -110,7 +111,7 @@ echo "Git shell links created."
 
 
 # Set up mutt
-muttArr=('muttrc')
+muttArr=('muttrc offlineimap.py')
 echo "Setting up mutt related files..."
 for LINK in ${muttArr[@]}; do
     link_file "configs/mutt/${LINK}" ".mutt/${LINK}"
@@ -133,7 +134,7 @@ done
 echo "Script links created."
 
 # Set up other items
-miscArr=("dir_colors" "tmux.conf" "gcalclirc" "offlineimaprc")
+miscArr=("dir_colors" "tmux.conf" "gcalclirc" "offlineimaprc" "notmuch-config")
 echo "Setting up miscellaneous configuration file links."
 for LINK in ${miscArr[@]}; do
         #echo "Linking .${LINK}..."
