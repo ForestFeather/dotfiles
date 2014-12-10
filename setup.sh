@@ -133,7 +133,7 @@ done
 echo "Script links created."
 
 # Set up other items
-miscArr=("dir_colors" "tmux.conf" "gcalclirc")
+miscArr=("dir_colors" "tmux.conf" "gcalclirc" "offlineimaprc")
 echo "Setting up miscellaneous configuration file links."
 for LINK in ${miscArr[@]}; do
         #echo "Linking .${LINK}..."
