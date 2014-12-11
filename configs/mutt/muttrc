@@ -46,6 +46,13 @@ set beep_new             # bell on new mails
 set pipe_decode          # strip headers and eval mimes when piping
 set thorough_search      # strip headers and eval mimes before searching
 
+# OfflineIMAP Mailbox stuff -------------------------
+set folder= "~/.mail"
+source ~/.mutt/mailboxes
+set spoolfile = "+personal/INBOX"
+set record = "+personal/Sent\ Items"
+set postponed = "+personal/Drafts"
+
 # Sidebar Patch --------------------------------------
 set sidebar_delim   = '  │'
 set sidebar_visible = yes
