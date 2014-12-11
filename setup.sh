@@ -43,8 +43,7 @@ unlink_file() {
 }
 
 # Set up directories
-p
-foldersArr=(scripts bin .ssh .mutt .mail .offlineimap .screen .vim .config '.config/fontconfig' '.config/fontconfig/conf.d'  '.vim/colors' '.vim/bundle' '.vim/plugin' .tmux .git .fonts Applications Documents Downloads DUMP Movies Music Pictures Projects Sites Landfill)
+foldersArr=(scripts bin .ssh .mutt '.mutt/temp' .mail .offlineimap .screen .vim .config '.config/fontconfig' '.config/fontconfig/conf.d'  '.vim/colors' '.vim/bundle' '.vim/plugin' .tmux .git .fonts Applications Documents Downloads DUMP Movies Music Pictures Projects Sites Landfill)
 echo "Creating directories."
 for LINK in ${foldersArr[@]}; do
 	if [ ! -d "$HOME/$LINK" ]; then
