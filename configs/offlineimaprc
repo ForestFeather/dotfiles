@@ -1,16 +1,16 @@
 [general]
 ui = TTY.TTYUI
-accounts = Personal, Private, MNFurs, Secretary
+accounts = personal, private, mnfurs, secretary
 pythonfile=~/.mutt/offlineimap.py
 fsync = False
 
-[Account Personal]
-localrepository = Personal-Local
-remoterepository = Personal-Remote
+[Account personal]
+localrepository = personal-Local
+remoterepository = personal-Remote
 status_backend = sqlite
 postsynchook = notmuch new
 
-[Repository Personal-Local]
+[Repository personal-Local]
 type = Maildir
 localfolders = ~/.mail/personal
 nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
@@ -20,7 +20,7 @@ nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
                             'archive': '[Gmail]/All Mail',
                            }.get(folder, folder)
 
-[Repository Personal-Remote]
+[Repository personal-Remote]
 maxconnections = 1
 type = Gmail
 remoteuser = collin.d.oconnor@gmail.com
@@ -36,13 +36,13 @@ nametrans = lambda folder: {'[Gmail]/Drafts':    'drafts',
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 
 
-[Account Private]
-localrepository = Private-Local
-remoterepository = Private-Remote
+[Account private]
+localrepository = private-Local
+remoterepository = private-Remote
 status_backend = sqlite
 postsynchook = notmuch new
 
-[Repository Private-Local]
+[Repository private-Local]
 type = Maildir
 localfolders = ~/.mail/private
 nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
@@ -52,7 +52,7 @@ nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
                             'archive': '[Gmail]/All Mail',
                            }.get(folder, folder)
 
-[Repository Private-Remote]
+[Repository private-Remote]
 maxconnections = 1
 type = Gmail
 remoteuser = ridayah@gmail.com
@@ -67,13 +67,13 @@ nametrans = lambda folder: {'[Gmail]/Drafts':    'drafts',
 # Necessary as of OfflineIMAP 6.5.4
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 
-[Account MNFurs]
-localrepository = MNFurs-Local
-remoterepository = MNFurs-Remote
+[Account mnfurs]
+localrepository = mnfurs-Local
+remoterepository = mnfurs-Remote
 status_backend = sqlite
 postsynchook = notmuch new
 
-[Repository MNFurs-Local]
+[Repository mnfurs-Local]
 type = Maildir
 localfolders = ~/.mail/mnfurs
 nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
@@ -83,7 +83,7 @@ nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
                             'archive': '[Gmail]/All Mail',
                            }.get(folder, folder)
 
-[Repository MNFurs-Remote]
+[Repository mnfurs-Remote]
 maxconnections = 1
 type = Gmail
 remoteuser = ridayah@mnfurs.org
@@ -99,13 +99,13 @@ nametrans = lambda folder: {'[Gmail]/Drafts':    'drafts',
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 
 
-[Account Secretary]
-localrepository = Secretary-Local
-remoterepository = Secretary-Remote
+[Account secretary]
+localrepository = secretary-Local
+remoterepository = secretary-Remote
 status_backend = sqlite
 postsynchook = notmuch new
 
-[Repository Secretary-Local]
+[Repository secretary-Local]
 type = Maildir
 localfolders = ~/.mail/secretary
 nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
@@ -115,7 +115,7 @@ nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
                             'archive': '[Gmail]/All Mail',
                            }.get(folder, folder)
 
-[Repository Secretary-Remote]
+[Repository secretary-Remote]
 maxconnections = 1
 type = Gmail
 remoteuser = secretary@mnfurs.org
