@@ -130,11 +130,11 @@ nametrans = lambda folder: {'[Gmail]/Drafts':    'drafts',
 # Necessary as of OfflineIMAP 6.5.4
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 
-[mbnames]
-enabled = yes
-filename = ~/.mutt/mailboxes
-header = "mailboxes "
-peritem = "+%(accountname)s/%(foldername)s"
-sep = " "
-footer = "\n"
+#[mbnames]
+#enabled = yes
+#filename = ~/.mutt/mailboxes
+#header = "mailboxes "
+#peritem = "+%(accountname)s/%(foldername)s"
+#sep = " "
+#footer = "\n"
 
