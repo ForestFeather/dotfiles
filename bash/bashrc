@@ -146,6 +146,21 @@ else
 fi
 
 #################################################################################
+# OS Selection
+#
+# Quick to detect if under OSX
+#################################################################################
+OS=''
+case $OSTYPE in
+    darwin*)
+        OS='Mac'
+        ;;
+    linux*)
+        OS='Linux'
+        ;;
+esac
+
+#################################################################################
 # PROMPT
 #
 # We HAVE to have a pretty pretty prompt.  Now let's get to it, damnit.
@@ -186,8 +201,15 @@ function prompt_command {
 	TERMWIDTH=${COLUMNS}
     # TODO: PUT SIZE CHANGING IN HERE.  THIS WILL DO IT.
 	#tempdate=$(date "+%A, %b %d %r")
-	memavail=$(memavailable)
-	lsbytes=$(lsbytesum)
+	memavail=''
+    lsbytes=''
+    case $OS in
+        Linux*)
+            memavail=$(memavailable)
+	        lsbytes=$(lsbytesum)
+            ;;
+    esac
+
 	temp="---< ${USERNAM}@${HOSTNAM} >---< ${memavail} >---< ${lsbytes} >---< ${PWD} >---"
 	let fillsize=${TERMWIDTH}-${#temp}
 	if [ "$fillsize" -gt "0" ]; then
@@ -200,7 +222,7 @@ function prompt_command {
 	then
 		fill=""
 		let cut=3-${fillsize}
-		newPWD="...${PWD:${cut}}"
+	newPWD="...${PWD:${cut}}"
 	fi
 }
 
@@ -235,17 +257,22 @@ function current_pane_width() {
     tmux list-panes -t "Session" | grep \(active\) | awk -F'[\[x\]]' '{print $2}'
 }
 
-case $TERM in
-	*rxvt* | putty | *xterm* | screen* ) 
-        if [ -n ${TMUX} ] && [ current_pane_width -ge 60 ] ; then
-            longprompt
-        elif [  ${COLUMNS} -ge 60  ]; then
-            longprompt
-        else
-            basicprompt
-        fi
+case $OS in
+    Linux* )
+        case $TERM in
+	        *rxvt* | putty | *xterm* | screen* ) 
+                if [ -n ${TMUX} ] && [ current_pane_width -ge 60 ] ; then
+                    longprompt
+                elif [  ${COLUMNS} -ge 60  ]; then
+                    longprompt
+                else
+                    basicprompt
+                fi
+                ;;
+	        *) basicprompt ;;
+        esac
         ;;
-	*) basicprompt ;;
+    *) basicprompt ;;
 esac
 
 #################################################################################
