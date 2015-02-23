@@ -43,7 +43,7 @@ unlink_file() {
 }
 
 # Set up directories
-foldersArr=(scripts bin .ssh .mutt '.mutt/temp' .mail .offlineimap .screen .vim .config '.config/fontconfig' '.config/fontconfig/conf.d'  '.vim/colors' '.vim/bundle' '.vim/plugin' .tmux .git .fonts Applications Documents Downloads DUMP Movies Music Pictures Projects Sites Landfill)
+foldersArr=(scripts bin .ssh .mutt '.mutt/temp' .tmuxinator .mail .offlineimap .screen .vim .config '.config/fontconfig' '.config/fontconfig/conf.d'  '.vim/colors' '.vim/bundle' '.vim/plugin' .tmux .git .fonts Applications Documents Downloads DUMP Movies Music Pictures Projects Sites Landfill)
 echo "Creating directories."
 for LINK in ${foldersArr[@]}; do
 	if [ ! -d "$HOME/$LINK" ]; then
@@ -124,6 +124,14 @@ for LINK in ${tmuxArr[@]}; do
     link_file "configs/tmux/${LINK}" ".tmux/${LINK}"
 done
 echo "Tmux setup completed."
+
+# Set up tmuxinator
+tmuxinatorArr=('basic.yml' )
+echo "Setting up tmuxinator related files..."
+for LINK in ${tmuxinatorArr[@]}; do
+    link_file "configs/tmuxinator/${LINK}" ".tmuxinator/${LINK}"
+done
+echo "Tmuxinator setup completed."
 
 # Set up scripts
 echo "Setting up script links."

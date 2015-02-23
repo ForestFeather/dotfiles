@@ -4,6 +4,10 @@ tmux
 less
 ruby
 
+gems:
+tmuxinator
+turses
+
 optional:
 keychain
 irssi
