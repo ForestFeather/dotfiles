@@ -881,7 +881,10 @@ function memavailable () {
 
 	# Now for calculations
 	freemem="$(echo -e "scale=2 \n${curmem}*100/${totalmem} " | bc)"
-	freeswap="$(echo -e "scale=2 \n${swapfree}*100/${swaptotal} " | bc)"
+	freeswap="0"
+    if [ ${swaptotal} -gt 0 ]; then
+        freeswap="$(echo -e "scale=2 \n${swapfree}*100/${swaptotal} " | bc)"
+    fi
 
 	# Print result.
 	echo "Mem: ${freemem}%/${freeswap}%"
