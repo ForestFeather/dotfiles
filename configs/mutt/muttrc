@@ -22,6 +22,10 @@
 #set move = no
 #set imap_keepalive = 900
 
+# sending
+set sendmail="/usr/bin/msmtp"
+set envelope_from=yes
+
 # Paths ----------------------------------------------
 set folder           = ~/.mail               # mailbox location
 set alias_file       = ~/.mutt/alias         # where to store aliases
@@ -56,7 +60,8 @@ set postponed = "+personal/Drafts"
 # Index View Options ---------------------------------
 set date_format = "%m/%d"
 set index_format = "[%Z]  %D  %-20.20F  %s"
-set sort = threads                         # like gmail
+#set sort = threads                         # like gmail
+set sort = reverse-date-received
 set sort_aux = reverse-last-date-received  # like gmail
 set uncollapse_jump                        # don't collapse on an unread message
 set sort_re                                # thread based on regex
