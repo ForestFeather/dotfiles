@@ -74,7 +74,7 @@
 	contributors = shortlog --summary --numbered
 
     # Basically, grab all remote's branches and create local branchtags for them.
-    pullall = "!f() { for remote in `git branch -r`; do git branch --track ${remote#origin/} $remote; done; git fetch --all; git pull --all; } f"
+    pullall = "!f() { for remote in `git branch -r | grep -v -- '->'`; do git branch --track ${remote#origin/} $remote; done; git fetch --all; git pull --all; }; f"
 
     ####################################################################
     # PULLED FROM: http://haacked.com/archive/2014/07/28/github-flow-aliases/
