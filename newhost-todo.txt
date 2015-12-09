@@ -11,6 +11,7 @@
 
 [ Bash ]
  - Add host-specific function (.bashrc)
+ - Add dotfiles update script to cron ( in ~/scripts/update-dotfiles.sh )
 
 [ Mail ]
  - Create .netrc file for passwords/accounts.
