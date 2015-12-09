@@ -6,3 +6,4 @@
 
 cd ~/.dotfiles
 git pull --all --verbose
+bash setup.sh
