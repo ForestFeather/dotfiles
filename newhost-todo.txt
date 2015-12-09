@@ -12,6 +12,7 @@
 [ Bash ]
  - Add host-specific function (.bashrc)
  - Add dotfiles update script to cron ( in ~/scripts/update-dotfiles.sh )
+ - - Runs 3am every 7 days: 0 3 */7 * * ~/scripts/update-dotfiles.sh >/dev/null 2>&1
 
 [ Mail ]
  - Create .netrc file for passwords/accounts.
