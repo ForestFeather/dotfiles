@@ -421,7 +421,8 @@ case $PKG_MNGR in
                 alias distupgrade='sudo apt-get dist-upgrade -y'
                 alias expunge='sudo apt-get clean -y'
                 alias flush='sudo apt-get autoremove -y'
-	;;
+	            alias fullupdate='sudo ntpdate pool.ntp.org;sudo apt-get update -y;sudo apt-get upgrade -y;sudo apt-get dist-upgrade -y;sudo apt-get clean -y;sudo apt-get autoremove -y'
+                ;;
 	Emerge )
                 alias emerge='sudo emerge'
                 alias esearch='esearch -S'
