@@ -261,11 +261,12 @@ case $OS in
     Linux* )
         case $TERM in
 	        *rxvt* | putty | *xterm* | screen* ) 
-                if [ -n ${TMUX} ] && [ current_pane_width -ge 60 ] ; then
-                    longprompt
-                elif [  ${COLUMNS} -ge 60  ]; then
+               # if [ -n ${TMUX} ] && [ current_pane_width -ge "60" ] ; then
+               #     longprompt
+               if [  $(tput lines) -ge "60"  ]; then
                     longprompt
                 else
+                    echo "Not enough prompt space; have $(tput lines) available."
                     basicprompt
                 fi
                 ;;
