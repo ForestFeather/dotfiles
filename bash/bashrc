@@ -617,7 +617,8 @@ alias dos2unix="perl -pi -e 's/\r\n/\n/;'"
 alias unix2dos="perl -pi -e 's/\n/\r\n/;'"
 alias update-time="sudo ntpdate pool.ntp.org"
 
-
+# Various aliases
+alias youtube-playlist-download="youtube-dl -v -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' -o '%(playlist)s - %(uploader)s/%(playlist_index)s - %(title)s.%(ext)s'"
 
 # Simple Functions
 #
