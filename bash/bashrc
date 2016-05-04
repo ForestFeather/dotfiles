@@ -263,10 +263,10 @@ case $OS in
 	        *rxvt* | putty | *xterm* | screen* ) 
                # if [ -n ${TMUX} ] && [ current_pane_width -ge "60" ] ; then
                #     longprompt
-               if [  $(tput lines) -ge "60"  ]; then
+               if [  $(tput cols) -ge "60"  ]; then
                     longprompt
                 else
-                    echo "Not enough prompt space; have $(tput lines) available."
+                    echo "Not enough prompt space; have $(tput cols) available."
                     basicprompt
                 fi
                 ;;
@@ -880,10 +880,10 @@ function lsbytesum () {
 }
 
 function memavailable () {
-	local curmem="$(free -m | grep 'buffers/cache' | awk '{print $4}')"
-	local totalmem="$(free -m | grep 'Mem' | awk '{print $2}')"
-	local swaptotal="$(free -m | grep 'Swap' | awk '{print $2}')"
-	local swapfree="$(free -m | grep 'Swap' | awk '{print $4}')"
+	local curmem="$(free -m | awk 'NR==2{print $3}')"
+	local totalmem="$(free -m | awk 'NR==2{print $2}')"
+	local swaptotal="$(free -m | awk 'NR==3{print $2}')"
+	local swapfree="$(free -m | awk 'NR==3{print $4}')"
 
 	# Now for calculations
 	freemem="$(echo -e "scale=2 \n${curmem}*100/${totalmem} " | bc)"
