@@ -8,10 +8,7 @@ IFS=$'\n'
 # Get files
 for i in `find . -type f -name "*.m4v"`; do
     elements=($( echo "$i" | awk 'BEGIN {FS=" X.X "} {for(l=1;l<=NF;l++)print $l}' ))
-    echo "$i"
-    for j in ${elements[@]}; do
-        echo $j
-    done
+    
     if [ $first == 1 ]; then
         first=0
         nfo-tvshow.sh "${elements[0]:2}"
@@ -31,7 +28,7 @@ for i in `find . -type f -name "*.m4v"`; do
     <season>1</season>
     <episode>${episode}</episode>
     <aired>${airedyear}-${airedmonth}-${airedday}</aired>
-</episodedetails>"
+</episodedetails>" > "${i:2:-4}.nfo"
 
 done;
 
