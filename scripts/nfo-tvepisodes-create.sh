@@ -1,0 +1,38 @@
+#!/bin/bash
+
+first=1
+IFS=$'\n'
+
+# Create NFO files, first we just work on splitting
+
+# Get files
+for i in `find . -type f -name "*.m4v"`; do
+    elements=($( echo "$i" | awk 'BEGIN {FS=" X.X "} {for(l=1;l<=NF;l++)print $l}' ))
+    echo "$i"
+    for j in ${elements[@]}; do
+        echo $j
+    done
+    if [ $first == 1 ]; then
+        first=0
+        nfo-tvshow.sh "${elements[0]:2}"
+    fi
+    
+    nameminusfiletype="${i::-4}"
+    eptitlefull="${elements[4]}"
+    eptitle="${eptitlefull::-4}"
+    episode="${elements[3]}"
+    fullaired="${elements[1]}"
+    airedyear="$( echo "$fullaired" | cut -c1-4 )"
+    airedmonth="$( echo "$fullaired" | cut -c5-6 )"
+    airedday="$( echo "$fullaired" | cut -c7-8 )"
+
+    echo "<episodedetails>
+    <title>${eptitle}</title>
+    <season>1</season>
+    <episode>${episode}</episode>
+    <aired>${airedyear}-${airedmonth}-${airedday}</aired>
+</episodedetails>"
+
+done;
+
+
