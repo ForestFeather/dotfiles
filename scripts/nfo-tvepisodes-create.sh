@@ -6,7 +6,7 @@ IFS=$'\n'
 # Create NFO files, first we just work on splitting
 
 # Get files
-for i in `find . -type f -name "*.m4v"`; do
+for i in `find . -type f -name "*.mp4"`; do
     elements=($( echo "$i" | awk 'BEGIN {FS=" X.X "} {for(l=1;l<=NF;l++)print $l}' ))
     
     if [ $first == 1 ]; then

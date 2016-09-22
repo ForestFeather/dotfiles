@@ -626,6 +626,17 @@ alias youtube-video-download="youtube-dl -v -f 'bestvideo[ext=mp4][height<=?1080
 # Nice, simple, easy to understand functions.  Just wait til later...
 #################################################################################
 
+# Execute in multiple subdirectories
+function run_in_subdirectories()
+{
+    for d in ./*/; do
+        echo -e "Entering directory $d ..." 
+        cd "$d"
+        $@
+        cd ..
+    done
+}
+
 # Very VERY important, must not forget keychain.
 # ssh keymanager
 if [ -e /usr/bin/keychain ]; then
