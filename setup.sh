@@ -166,3 +166,9 @@ done
 
 echo "SSH setup completed."
 
+# Set up cron job for auto updating
+echo "Beginning cronjob setup."
+scripts/dotfiles-cronjob.sh
+
+echo "Cronjob installed."
+
