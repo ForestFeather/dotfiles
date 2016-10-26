@@ -11,6 +11,7 @@ turses
 optional:
 keychain
 irssi
+inxi
 mutt
 mutt-patched
 urlview
