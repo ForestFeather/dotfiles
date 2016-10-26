@@ -224,6 +224,9 @@ then
     let cut=3-${fillsize}
     newPWD="...${PWD:${cut}}"
 fi
+
+# Let the system figure out the prompt after each evail
+determine_prompt
 }
 
 PROMPT_COMMAND=prompt_command
@@ -257,16 +260,17 @@ function current_pane_width() {
 tmux list-panes -t "Session" | grep \(active\) | awk -F'[\[x\]]' '{print $2}'
 }
 
+function determine_prompt() {
 case $OS in
     Linux* )
         case $TERM in
             *rxvt* | putty | *xterm* | screen* ) 
                 # if [ -n ${TMUX} ] && [ current_pane_width -ge "60" ] ; then
                 #     longprompt
-                if [  $(tput cols) -ge "60"  ]; then
+                if [  $(tput cols) -ge "72"  ]; then
                     longprompt
                 else
-                    echo "Not enough prompt space; have $(tput cols) available."
+                    #echo "Not enough prompt space; have $(tput cols) available."
                     basicprompt
                 fi
                 ;;
@@ -275,6 +279,10 @@ case $OS in
         ;;
     *) basicprompt ;;
 esac
+}
+
+# Run it
+determine_prompt
 
 #################################################################################
 # EXPORTS
