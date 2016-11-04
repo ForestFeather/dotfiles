@@ -729,7 +729,8 @@ function installkeys () {
 if [ $# -lt 2 ]; then
     echo "You have not entered enough arguments.  Proper format is installkeys <port> <user@host>."
 else
-    cat ~/.ssh/id_rsa.pub | ssh -p $1 $2 "cat - >> ~/.ssh/authorized_keys"
+   # cat ~/.ssh/id_rsa.pub | ssh -p $1 $2 "cat - >> ~/.ssh/authorized_keys"
+    ssh-copy-id -p $1 -i ~/.ssh/id_rsa.pub $2
 fi
 }
 
