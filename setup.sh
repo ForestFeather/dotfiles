@@ -151,12 +151,12 @@ echo "Miscellaneous configuration file links created."
 
 # Generate ssh keys/setup ssh
 echo "Beginning SSH setup."
-if [ ! -e ~/.ssh/id_dsa ]; then
+if [ ! -e ~/.ssh/id_rsa ]; then
 	echo "No existing SSH key found, generating new keys..."
-	ssh-keygen -t dsa -N "" -f ~/.ssh/id_dsa
+	ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
 	echo "SSH key generation done."
 else
-	echo "Existing id_dsa found, skipping SSH key generation."
+	echo "Existing id_rsa found, skipping SSH key generation."
 fi
 echo "Setting up ssh configuration files."
 sshArr=('config' 'authorized_keys2')

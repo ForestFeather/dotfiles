@@ -648,7 +648,7 @@ function run_in_subdirectories()
 # Very VERY important, must not forget keychain.
 # ssh keymanager
 if [ -e /usr/bin/keychain ]; then
-    keychain -q ~/.ssh/id_dsa
+    keychain -q ~/.ssh/id_rsa
     if [ -e ~/.ssh-agent-${HOSTNAME} ]; then
         . ~/.ssh-agent-${HOSTNAME}
     fi
@@ -729,7 +729,7 @@ function installkeys () {
 if [ $# -lt 2 ]; then
     echo "You have not entered enough arguments.  Proper format is installkeys <port> <user@host>."
 else
-    cat ~/.ssh/id_dsa.pub | ssh -p $1 $2 "cat - >> ~/.ssh/authorized_keys"
+    cat ~/.ssh/id_rsa.pub | ssh -p $1 $2 "cat - >> ~/.ssh/authorized_keys"
 fi
 }
 
