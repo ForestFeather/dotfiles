@@ -575,6 +575,7 @@ alias tapslely="tf -f~/.tf/LelyTaps"
 alias spheresmux="tf -f~/.tf/Spheres"
 alias scalesmuck="tf -f~/.tf/Scales"
 alias aeon="tf -f~/.tf/Aeon"
+alias taps="tf -f~/.tf/tfrc"
 alias taillog="tail -n 30 -f /var/log/messages"
 
 # Screen aliases
