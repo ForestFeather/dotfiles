@@ -730,7 +730,7 @@ if [ $# -lt 2 ]; then
     echo "You have not entered enough arguments.  Proper format is installkeys <port> <user@host>."
 else
    # cat ~/.ssh/id_rsa.pub | ssh -p $1 $2 "cat - >> ~/.ssh/authorized_keys"
-    ssh-copy-id -p $1 -i ~/.ssh/id_rsa.pub $2
+    ssh-copy-id -i ~/.ssh/id_rsa.pub -p $1 $2
 fi
 }
 
