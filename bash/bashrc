@@ -547,8 +547,8 @@ case $HOSTNAM in
     * )
         alias pubtunnel="ssh -C2 -D 8080 cdo@collindoconnor.com"
         alias worktunnel="ssh -C2 -D 8080 cdo@feather-mage.com"
-        alias hometunnel="ssh -p 3764 -C2 -D 8080 ridayah@dragonsburrow.asuscomm.com"
-        alias homenet="ssh -p 3764 ridayah@dragonsburrow.asuscomm.com"
+        alias hometunnel="ssh -p 3764 -C2 -D 8080 ridayah@dragons-burrow.com"
+        alias homenet="ssh -p 3764 ridayah@dragons-burrow.com"
         ;;
 esac
 
