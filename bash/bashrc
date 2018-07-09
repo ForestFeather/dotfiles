@@ -461,6 +461,11 @@ case $PKG_MNGR in
         alias yum='sudo yum'
         alias update='yum update'
         alias updatey='yum -y update'
+        alias add='yum -y install'
+        alias remove='yum remove'
+        alias upgrade='yum -y update'
+        alias distupgrade'yum -y update'
+        alias fullupdate='sudo ntpdate pool.ntp.org;yum -y update'
         ;;
     Slackpkg )
         alias installpkg="sudo installpkg"
