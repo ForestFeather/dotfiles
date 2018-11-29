@@ -1,0 +1,38 @@
+THIS IS TO SET UP AN AUTOSSH TUNNEL.  This is useful for say, a box behind a firewall, that wants to be connected to; but you can't open ports or whatnot.
+What this does is creates an autossh connection to connect out, then allow a reverse tunnel on a chosen port.
+For security, a special user is made to allow the tunnel to behave.
+
+Once the tunnel is running on the (restricted) box, you can connect to the (restricted) box from the (target_host) box by going 'ssh user@localhost -p tunnel_port'.
+
+We use autossh so it automatically tries to renew the connection if it drops.
+
+Install autossh:
+add autossh
+
+Make user first on restricted box:
+sudo useradd -m -s /sbin/nologin autossh
+
+
+Make user on target_host box (be sure to store this password for later use if necessary):
+sudo useradd -m -s /bin/bash autossh
+autosshpass=`date | md5sum | cut -c1-10` && echo "$autosshpass" | echo -e "$autosshpass\n$autosshpass" | passwd autossh
+
+Generate all keys for autossh user on restricted box:
+sudo su - autossh -s /bin/bash
+ssh-keygen -t dsa
+ssh-keygen -t rsa
+ssh-keygen -t ed25519
+
+Upload keys from restricted box to target_host box (as autossh user):
+ssh-copy-id target_box -p port
+
+Create and update service script for restricted box:
+cp autossh.service.example autossh.service
+vim autossh.service (follow instructions)
+sudo cp autossh.service /etc/systemd/service/autossh.service
+
+Reload SystemD and enable, then finally check that it's working:
+sudo systemctl daemon-reload
+sudo systemctl start autossh
+sudo systemctl status autossh
+sudo systemctl enable autossh
