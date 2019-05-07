@@ -126,7 +126,7 @@ done
 echo "Tmux setup completed."
 
 # Set up tmuxinator
-tmuxinatorArr=('basic.yml', 'bastion.yml', 'monitoring.yml', 'chat.yml', 'gaming.yml' )
+tmuxinatorArr=('basic.yml' 'bastion.yml' 'monitoring.yml' 'chat.yml' 'gaming.yml' )
 echo "Setting up tmuxinator related files..."
 for LINK in ${tmuxinatorArr[@]}; do
     link_file "configs/tmuxinator/${LINK}" ".tmuxinator/${LINK}"
