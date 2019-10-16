@@ -589,6 +589,7 @@ alias screen="screen -U"
 alias screenon="screen -c $HOME/.screen/screenrc -S Default"
 alias minscreen="screen -c $HOME/.screen/minscreenrc -S Default"
 alias resumescreen="screen -rAax Default"
+alias tmux-bastion="tmuxinator start bastion -n Bastion"
 
 # Command Aliases
 alias grep="grep --color=auto"
@@ -633,8 +634,8 @@ alias update-time="sudo ntpdate pool.ntp.org"
 
 # Various aliases
 alias youtube-playlist-download="youtube-dl -v -f 'bestvideo[ext=mp4][height<=?1080][filesize<512M][height>=?360]+bestaudio[ext=m4a]/best[ext=mp4][height<=?1080][filesize<512M][height>=?360]/best' --download-archive archive.list -o '%(playlist)s - %(uploader)s/%(playlist)s X.X %(release_date)s X.X S01E%(playlist_index)s X.X %(playlist_index)s X.X %(title)s.%(ext)s'"
-alias youtube-video-download="youtube-dl -v -f 'bestvideo[ext=mp4][height<=?1080]+bestaudio[ext=m4a]/best[ext=mp4][height<=?1080]/best' -o '%(uploader)s - %(title)s.%(ext)s'"
-alias crunchyroll-playlist-download="youtube-dl -v --cookies ~/cr_cookies.txt --min-sleep-interval 60 --max-sleep-interval 1800 --download-archive archive.list --all-subs --write-description -f 'bestvideo[ext=mp4][height<=?1080][filesize<512M][height>=?360]>+bestaudio[ext=m4a]/best[ext=mp4][height<=?1080][height>=?360][filesize<512M]/best[ext=mp4]/best' -o '%(series)s/S01E%(playlist_index)s X.X %(playlist_index)s X.X %(title)s.%(ext)s'"
+alias youtube-video-download="youtube-dl -f 'bestvideo[ext=mp4][height<=?1080]+bestaudio[ext=m4a]/best[ext=mp4][height<=?1080]/best' -o '%(uploader)s - %(title)s.%(ext)s'"
+alias crunchyroll-playlist-download="youtube-dl --cookies ~/cr_cookies.txt --min-sleep-interval 60 --max-sleep-interval 1800 --download-archive archive.list --all-subs --write-description -f 'bestvideo[ext=mp4][height<=?1080][filesize<512M][height>=?360]>+bestaudio[ext=m4a]/best[ext=mp4][height<=?1080][height>=?360][filesize<512M]/best[ext=mp4]/best' -o '%(series)s/S01E%(playlist_index)s X.X %(playlist_index)s X.X %(title)s.%(ext)s'"
 
 # Simple Functions
 #

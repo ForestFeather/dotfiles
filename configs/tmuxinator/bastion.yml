@@ -61,8 +61,11 @@ windows:
         layout: tiled
         panes:
             - Crunchyroll:
+                - cd /media/sokarpublic/crunchyroll_anime/
             - Youtube1:
+                - cd /media/sokarpublic/youtube_vids2/
             - Youtube2:
+                - cd /media/dagon/videos/youtube_vids/
             - Other:
     - Remote:
         layout: tiled
@@ -81,5 +84,5 @@ windows:
         layout: main-horizontal
         panes:
             - Mail:
-            - Logs: tail -f /var/log/messages
+            - Logs: tail -n 30 -f /var/log/syslog
             - Top: top
