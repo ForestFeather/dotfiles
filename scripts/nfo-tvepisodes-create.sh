@@ -11,7 +11,12 @@ for i in `find . -type f -name "*.mp4"`; do
     
     if [ $first == 1 ]; then
         first=0
-        nfo-tvshow.sh "${elements[0]:2}"
+        #nfo-tvshow.sh "${elements[0]:2}"
+        # Change to put content creator in name title
+        dirname="$(pwd)"
+        result="${dirname%"${dirname##*[!/]}"}"
+        result="${result##*/}"
+        nfo-tvshow.sh "$result"
     fi
     
     nameminusfiletype="${i::-4}"
