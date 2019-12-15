@@ -3,6 +3,7 @@ from lxml import etree
 import os
 from datetime import datetime
 from glob import glob
+import cgi
 
 files = glob(os.path.basename(os.getcwd() + "/*.info.json"))
 
@@ -21,12 +22,18 @@ for i in range(len(files)):
     # ITEMS TO WRITE:  Title(fulltitle), Playlist(showtitle), Rating(ratings/rating name/etc),Tags(genre),Update_date(aired), Thumbnail/URL(thumb), Description(plot),
     nfo_file = open(files[i][:-10] + '.nfo', 'w+')
     root = etree.Element('episodedetails')
-    xfulltitle = etree.Element('fulltitle')
+    xfulltitle = etree.Element('title')
     xfulltitle.text = parsed_json['title']
     root.append(xfulltitle)
     xshowtitle = etree.Element('showtitle')
     xshowtitle.text = parsed_json['playlist']
     root.append(xshowtitle)
+    xseason = etree.Element('season')
+    xseason.text = '1'
+    root.append(xseason)
+    xepisode = etree.Element('episode')
+    xepisode.text = str(parsed_json['playlist_index'])
+    root.append(xepisode)
     xratings = etree.Element('ratings')
     xrating = etree.Element('rating')
     xrating.set('name', 'youtube')
@@ -41,7 +48,7 @@ for i in range(len(files)):
     xratings.append(xrating)
     root.append(xratings)
     xplot = etree.Element('plot')
-    xplot.text = parsed_json['description']
+    xplot.text = cgi.escape(parsed_json['description'])
     root.append(xplot)
     xthumb = etree.Element('thumb')
     xthumb.text = str(parsed_json['thumbnails'][0]['url'])
