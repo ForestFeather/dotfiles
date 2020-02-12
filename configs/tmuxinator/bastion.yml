@@ -57,16 +57,11 @@ windows:
         panes:
             - Irssi:
             - TF:
-    - Downloads:
-        layout: tiled
+    - Remote:
+        layout: main-vertical
         panes:
-            - Crunchyroll:
-                - cd /media/sokarpublic/crunchyroll_anime/
-            - Youtube1:
-                - cd /media/sokarpublic/youtube_vids2/
-            - Youtube2:
-                - cd /media/dagon/videos/youtube_vids/
-            - Other:
+            - SSH:
+            - SSH:
     - Remote:
         layout: tiled
         panes:
@@ -80,6 +75,30 @@ windows:
     - Shell:
     - Shell:
     - Shell:
+    - Downloads1:
+        layout: tiled
+        panes:
+            - Crunchyroll:
+                - cd /media/sokarpublic/crunchyroll_anime/
+            - Youtube1:
+                - cd /media/sokarpublic/youtube_vids2/
+            - Youtube2:
+                - cd /media/dagon/videos/youtube_vids/
+            - Ebooks:
+                - cd /media/dagon/dump/
+    - Downloads2:
+        layout: tiled
+        panes:
+            - VPN1:
+                - ssh ridayah@vpn-vm-bastion
+            - VPN2:
+                - ssh ridayah@vpn-vm-bastion
+            - VPN3:
+                - ssh ridayah@vpn-vm-bastion
+            - URLs:
+                - vim animetoget.txt
+    - BoincTUI:
+        - ssh ridayah@10.0.0.40
     - Utility:
         layout: main-horizontal
         panes:
