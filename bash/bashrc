@@ -934,7 +934,7 @@ local swapfree=0
 local freevers="$(free -V | awk '{print $4}')"
 
 # Do our switch depending
-if [ "$(version "$freevers")" -lt "$(version 3.3.10)" ]; then
+if [[ "$(version "$freevers")" -lt "$(version 3.3.10)" && "$(version "$freevers")" -ne "UNKNOWN" ]]; then
 
     local curmem="$(free -m | grep 'buffers/cache' | awk '{print $4}')"
     local totalmem="$(free -m | grep 'Mem' | awk '{print $2}')"
