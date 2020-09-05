@@ -53,10 +53,11 @@ for i in range(len(files)):
     xthumb = etree.Element('thumb')
     xthumb.text = str(parsed_json['thumbnails'][0]['url'])
     root.append(xthumb)
-    for j in range(len(parsed_json['tags'])):
-        xgenre = etree.Element('genre')
-        xgenre.text = parsed_json['tags'][j]
-        root.append(xgenre)
+    if parsed_json['tags']:
+        for j in range(len(parsed_json['tags'])):
+            xgenre = etree.Element('genre')
+            xgenre.text = parsed_json['tags'][j]
+            root.append(xgenre)
     xdirector = etree.Element('director')
     xdirector.text = parsed_json['uploader']
     root.append(xdirector)

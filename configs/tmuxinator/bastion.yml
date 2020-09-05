@@ -70,12 +70,12 @@ windows:
             - SSH:
             - SSH:
     - Work:
-    - Shell:
-    - Shell:
-    - Shell:
-    - Shell:
-    - Shell:
-    - Downloads1:
+    - Sh:
+    - Sh:
+    - Sh:
+    - Sh:
+    - Sh:
+    - DL:
         layout: tiled
         panes:
             - Crunchyroll:
@@ -86,7 +86,7 @@ windows:
                 - cd /media/dagon/videos/youtube_vids/
             - Ebooks:
                 - cd /media/dagon/dump/
-    - Downloads2:
+    - DL-VPN:
         layout: tiled
         panes:
             - VPN1:
@@ -97,9 +97,9 @@ windows:
                 - ssh ridayah@vpn-vm-bastion
             - URLs:
                 - vim animetoget.txt
-    - BoincTUI:
+    - Boinc:
         - ssh ridayah@10.0.0.40
-    - Utility:
+    - Util:
         layout: main-horizontal
         panes:
             - Mail:
